@@ -21,11 +21,11 @@
                     </div>
                     <div class="form-group">
                         <label>Active Wallet</label>
-                        <input type="text" name="active_wallet" id="modal_user_active_wallet" class="form-control">
+                        <input type="text" name="active_wallet" id="modal_user_active" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Deposit Wallet</label>
-                        <input type="text" name="deposit_wallet" id="modal_user_deposit_wallet" class="form-control">
+                        <input type="text" name="deposit_wallet" id="modal_user_deposit" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>User Status</label>

@@ -49,7 +49,7 @@
                         <td>{{ $user->created_at->format('Y-m-d H:i') }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>${{ number_format($user->wallet ?? 0, 2) }}</td>
+                        <td>${{ number_format($user->deposit_wallet ?? 0, 2) }}</td>
                         <td>${{ number_format($user->profit_wallet ?? 0, 2) }}</td>
                         <td>${{ number_format($user->active_wallet ?? 0, 2) }}</td>
                         <td>{{ $user->referredBy->name ?? 'N/A' }}</td>
@@ -69,8 +69,8 @@
                                     data-id="{{ $user->id }}"
                                     data-name="{{ $user->name }}"
                                     data-email="{{ $user->email }}"
-                                    data-modal_active_wallet="{{ $user->active_wallet }}"
-                                    data-modal_deposit_wallet="{{ $user->deposit_wallet }}"
+                                    data-modal_active="{{ $user->active_wallet }}"
+                                    data-modal_deposit="{{ $user->deposit_wallet }}"
                                     data-block="{{ $user->is_block }}"
                                     data-toggle="modal"
                                     data-target="#actionModal">
