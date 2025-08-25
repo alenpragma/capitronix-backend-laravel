@@ -6,7 +6,10 @@
         {{-- Country-wise Users Pie Chart --}}
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-body">
-                <canvas id="countryPieChart" width="1500" height="350" style="width:350px; height:250px;"></canvas>
+                <h5 class="card-title fw-bold mb-3">Users by Country</h5>
+                <div class="d-flex justify-content-center">
+                    <canvas id="countryPieChart" style="max-width:100%; height:300px;"></canvas>
+                </div>
             </div>
         </div>
 
