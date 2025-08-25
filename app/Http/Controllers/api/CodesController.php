@@ -71,7 +71,7 @@ class CodesController extends Controller
     {
         $user = $request->user();
         $codes = Code::where('code_owner', $user->id)
-            ->join('users', 'codes.user_id', '=', 'users.id')
+            ->leftJoin('users', 'codes.user_id', '=', 'users.id')
             ->select(
                 'codes.id',
                 'codes.code',
@@ -82,6 +82,7 @@ class CodesController extends Controller
             )
             ->orderBy('codes.created_at', 'desc')
             ->get();
+
 
         return response()->json([
             'status' => true,
