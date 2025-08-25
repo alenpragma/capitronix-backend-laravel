@@ -71,10 +71,18 @@ class CodesController extends Controller
     {
         $user = $request->user();
         $codes = Code::where('code_owner', $user->id)
-            ->join('users', 'codes.code_owner', '=', 'users.id')
-            ->select('codes.id', 'codes.name as code_name', 'users.name as user_name')
+            ->join('users', 'codes.user_id', '=', 'users.id')
+            ->select(
+                'codes.id',
+                'codes.code',
+                'codes.status',
+                'codes.code_owner',
+                'users.name as user_name',
+                'codes.created_at'
+            )
             ->orderBy('codes.created_at', 'desc')
             ->get();
+
         return response()->json([
             'status' => true,
             'codes' => $codes,
