@@ -1,3 +1,27 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.updateStatusBtn').forEach(button => {
+            button.addEventListener('click', function() {
+                let userId = this.dataset.id;
+                let userName = this.dataset.name;
+                let userEmail = this.dataset.email;
+                let userWallet = this.dataset.activeWallet;
+                let userDepositWallet = this.dataset.depositWallet;
+                let blockStatus = this.dataset.block;
+                let walletStatus = this.dataset.wallet;
+
+                document.getElementById('modal_user_id').value = userId;
+                document.getElementById('modal_user_name').value = userName;
+                document.getElementById('modal_user_email').value = userEmail;
+                document.getElementById('modal_user_active_wallet').value = userWallet;
+                document.getElementById('modal_user_deposit_wallet').value = userDepositWallet;
+                document.getElementById('modal_block_status').value = blockStatus;
+                document.getElementById('modal_wallet_status').value = walletStatus;
+            });
+        });
+    });
+</script>
+
 @extends('admin.layouts.app')
 
 @section('content')
@@ -69,9 +93,10 @@
                                     data-id="{{ $user->id }}"
                                     data-name="{{ $user->name }}"
                                     data-email="{{ $user->email }}"
-                                    data-active="{{ $user->active_wallet }}"
-                                    data-deposit="{{ $user->deposit_wallet }}"
+                                    data-active-wallet="{{ $user->active_wallet }}"
+                                    data-deposit-wallet="{{ $user->deposit_wallet }}"
                                     data-block="{{ $user->is_block }}"
+                                    data-wallet="{{ $user->profit_wallet }}"
                                     data-toggle="modal"
                                     data-target="#actionModal">
                                 <i class="fas fa-edit"></i> Manage
