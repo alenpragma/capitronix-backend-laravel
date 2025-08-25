@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('transactions', TransactionsController::class);
     Route::resource('kyc', KycController::class);
     Route::get('cron', [CronController::class, 'view'])->name('cron');
+    Route::post('add-plan', [PlansController::class, 'addPlan'])->name('add-plan');
 
 
     //holiday

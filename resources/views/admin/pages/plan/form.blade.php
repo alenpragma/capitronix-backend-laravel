@@ -5,7 +5,7 @@
 
 <div class="form-group">
     <label>Amount</label>
-    <input type="number" name="min_amount" class="form-control" value="{{ old('min_amount', $plan->min_amount ?? 0) }}" required>
+    <input type="number" name="amount" class="form-control" value="{{ old('amount', $plan->min_amount ?? 0) }}" required>
 </div>
 
 

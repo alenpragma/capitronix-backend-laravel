@@ -48,16 +48,15 @@ class PlansController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function addPlan(Request $request)
     {
+        return "dddd";
         $request->validate([
             'name' => 'required|string|max:255',
-            'min_amount' => 'required|numeric|min:0',
-            'max_amount' => 'required|numeric|gte:min_amount',
+            'amount' => 'required|numeric|min:0',
             'interest_rate' => 'required|numeric|min:0|max:100',
             'duration' => 'nullable|integer|min:0',
             'return_type' => 'required|in:daily,weekly,monthly',
-            'active' => 'required|boolean',
         ]);
 
         try {

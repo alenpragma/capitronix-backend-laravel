@@ -19,10 +19,9 @@ return new class extends Migration
             $table->string('interest_rate');
             $table->string('duration');
             $table->enum('return_type',['daily','weekly','monthly','yearly']);
-            $table->enum('type',['mini','master'])->default('master');
             $table->integer('stock')->default(0);
             $table->integer('total_sell')->default(0);
-            $table->boolean('active');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
 

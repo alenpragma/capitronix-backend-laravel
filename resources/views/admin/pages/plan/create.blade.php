@@ -7,8 +7,7 @@
             {{ session('error') }}
         </div>
     @endif
-
-    <form method="POST" action="{{ route('all-plan.store') }}">
+    <form method="POST" action="{{ route('add-plan') }}">
         @csrf
         @include('admin.pages.plan.form')
         <button type="submit" class="btn btn-primary">Create</button>
