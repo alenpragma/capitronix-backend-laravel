@@ -15,35 +15,57 @@ class CodesController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function buyCode(Request $request){
-        $user =  $request->user();
-        if ($user->active_wallet < 25){
+    public function buyCode(Request $request)
+    {
+        // Validate the request
+        $validated = $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $quantity = $validated['quantity'];
+        $user = $request->user();
+        $costPerCode = 25;
+        $totalCost = $costPerCode * $quantity;
+
+        // Check if the user has sufficient balance
+        if ($user->active_wallet < $totalCost) {
             return response()->json([
                 'status' => false,
-                'message' => "You don't have enough balance"
-            ]);
-        }else{
-            $user->active_wallet -= 25;
-            $code = new Code();
-            $newCode = $code->generateCode();
-            $code->code_owner = $user->id;
-            $code->code = $newCode;
-            $code->status = 'active';
-            $user->save();
-            $code->save();
-            $this->transactionService->addNewTransaction(
-                "$user->id",
-                "25",
-                "activation",
-                "-",
-                "For Activation Your Account"
-            );
-            return response()->json([
-                'status' => true,
-                'message' => "Code generated successfully",
-                'code' => $newCode,
+                'message' => "Insufficient balance to purchase {$quantity} code(s)."
             ]);
         }
+
+        // Deduct the total cost from the user's wallet
+        $user->active_wallet -= $totalCost;
+        $user->save();
+
+        $generatedCodes = [];
+
+        // Generate the codes
+        for ($i = 0; $i < $quantity; $i++) {
+            $code = new Code();
+            $code->code = $code->generateCode();
+            $code->code_owner = $user->id;
+            $code->status = 'active';
+            $code->save();
+
+            $generatedCodes[] = $code->code;
+
+            $this->transactionService->addNewTransaction(
+                $user->id,
+                $costPerCode,
+                'activation',
+                '-',
+                'Account activation via code purchase'
+            );
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => "{$quantity} code(s) generated successfully.",
+            'codes' => $generatedCodes,
+        ]);
     }
+
 
 }
