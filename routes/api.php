@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('profile', [UserController::class, 'UserProfile']);
     Route::get('active-account', [UserController::class, 'activeAccount']);
-    Route::get('buy-code', [CodesController::class, 'buyCode']);
+    Route::post('buy-code', [CodesController::class, 'buyCode']);
     Route::post('profile/update', [AuthController::class, 'profileUpdate']);
     Route::post('kyc-submit', [UserController::class, 'kyc']);
     Route::get('team', [UserController::class, 'team']);
