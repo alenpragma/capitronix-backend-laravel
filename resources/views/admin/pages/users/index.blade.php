@@ -49,7 +49,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>${{ number_format($user->wallet ?? 0, 2) }}</td>
-                        <td>{{ number_format($user->profit_wallet ?? 0, 2) }} BIZT</td>
+                        <td>{{ number_format($user->profit_wallet ?? 0, 2) }}</td>
                         <td>{{ $user->referredBy->name ?? 'N/A' }}</td>
                         <td>
                             <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }}">
