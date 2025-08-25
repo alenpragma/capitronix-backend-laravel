@@ -82,6 +82,8 @@ class AuthServices
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|unique:users,email',
             'mobile'    => 'required|string|max:15|min:10',
+            'country_code'    => 'required|string|max:15|min:10',
+            'country'    => 'required|string|max:15|min:10',
             'referCode' => 'nullable|string|max:8',
             'password'  => 'required|string|min:6',
         ]);
@@ -108,30 +110,15 @@ class AuthServices
                 }
             }
 
-            // External API call to generate wallet
-            $response = Http::post('https://evm.blockmaster.info/api/create-wallet');
-
-            $walletData = $response->json();
-
-            if (!isset($walletData['address']) || !isset($walletData['key'])) {
-                throw new \Exception("Invalid response from wallet service.");
-            }
-
             // Create user
             $user = User::create([
                 'name'      => $request->input('name'),
                 'email'     => $request->input('email'),
                 'mobile'    => $request->input('mobile'),
+                'country_code'   => $request->input('country_code'),
+                'country'   => $request->input('country'),
                 'refer_by'  => $referBy?->id,
                 'password'  => Hash::make($request->input('password')),
-            ]);
-
-            // Store wallet
-            UserWalletData::create([
-                'user_id'        => $user->id,
-                'meta'           => $walletData['key'],
-                'wallet_address' => $walletData['address'],
-                'currency'       => 'USD',
             ]);
 
             // Send verification notification

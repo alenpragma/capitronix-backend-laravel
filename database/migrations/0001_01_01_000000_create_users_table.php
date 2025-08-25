@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('mobile',15);
+            $table->string('country',90);
+            $table->string('country_code',10);
             $table->decimal('deposit_wallet', 20, 8)->default(0.00000000);
             $table->decimal('profit_wallet', 20, 8)->default(0.00000000);
             $table->decimal('active_wallet', 20, 8)->default(0.00000000);

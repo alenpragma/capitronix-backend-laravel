@@ -27,6 +27,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_active',
         'is_block',
         'password',
+        'country',
+        'country_code',
         'email_verified_at'
     ];
 
