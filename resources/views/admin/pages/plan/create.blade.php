@@ -2,6 +2,12 @@
 @section('content')
 <div class="p-5">
     <h4>Create New Plan</h4>
+    @if(session()->has('error'))
+        <div class="alert alert-success">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('all-plan.store') }}">
         @csrf
         @include('admin.pages.plan.form')

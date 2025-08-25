@@ -122,7 +122,9 @@ class UserController extends Controller
                     "$bonus",
                     "referral_commission",
                     "+",
-                    "Activation Bonus From $user->name"
+                    "Activation Bonus From $user->name",
+                    "Completed",
+                    'USDT'
                 );
             }
             $user->is_active = 1;

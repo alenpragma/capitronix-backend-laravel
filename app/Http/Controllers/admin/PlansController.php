@@ -60,9 +60,13 @@ class PlansController extends Controller
             'active' => 'required|boolean',
         ]);
 
-        Package::create($request->all());
-        $this->clearPackageCache();
-        return redirect()->route('all-plan.index')->with('success', 'Plan created successfully.');
+        try {
+            Package::create($request->all());
+            $this->clearPackageCache();
+            return redirect()->route('all-plan.index')->with('success', 'Plan created successfully.');
+        }catch (\Exception $exception){
+            return back()->with('error', $exception->getMessage());
+        }
     }
 
 

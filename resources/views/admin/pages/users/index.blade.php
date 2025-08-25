@@ -57,6 +57,7 @@
                     <th>Date</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Country</th>
                     <th>Wallet Balance</th>
                     <th>Profit Wallet</th>
                     <th>Active Wallet</th>
@@ -73,6 +74,7 @@
                         <td>{{ $user->created_at->format('Y-m-d H:i') }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ $user->country }}</td>
                         <td>${{ number_format($user->deposit_wallet ?? 0, 2) }}</td>
                         <td>${{ number_format($user->profit_wallet ?? 0, 2) }}</td>
                         <td>${{ number_format($user->active_wallet ?? 0, 2) }}</td>
