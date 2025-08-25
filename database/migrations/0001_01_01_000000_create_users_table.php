@@ -59,6 +59,8 @@ return new class extends Migration
            'is_active' => true,
            'is_block' => false,
            'refer_code' => 'admin',
+           'country' => 'US',
+           'country_code' => '+990',
            'email_verified_at' => now(),
        ]);
     }
