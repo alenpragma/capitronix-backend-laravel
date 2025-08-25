@@ -85,14 +85,16 @@
                 let userId = this.dataset.id;
                 let userName = this.dataset.name;
                 let userEmail = this.dataset.email;
-                let userWallet = this.dataset.wallet;
+                let userWallet = this.dataset.active_wallet;
+                let userDepositWallet = this.dataset.deposit_wallet;
                 let blockStatus = this.dataset.block;
                 let walletStatus = this.dataset.wallet;
 
                 document.getElementById('modal_user_id').value = userId;
                 document.getElementById('modal_user_name').value = userName;
                 document.getElementById('modal_user_email').value = userEmail;
-                document.getElementById('modal_user_wallet').value = userWallet;
+                document.getElementById('modal_user_active_wallet').value = userWallet;
+                document.getElementById('modal_user_deposit_wallet').value = userDepositWallet;
                 document.getElementById('modal_block_status').value = blockStatus;
                 document.getElementById('modal_wallet_status').value = walletStatus;
             });
