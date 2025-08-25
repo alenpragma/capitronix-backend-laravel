@@ -103,11 +103,11 @@
                         </td>
                         <td class="d-flex gap-1">
                             <a href="{{ route('all-plan.edit', $plan->id) }}" class="btn btn-sm btn-info">Edit</a>
-                            {{--                            <form action="{{ route('all-plan.destroy', $plan->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">--}}
-                            {{--                                @csrf--}}
-                            {{--                                @method('DELETE')--}}
-                            {{--                                <button class="btn btn-sm btn-danger">Delete</button>--}}
-                            {{--                            </form>--}}
+                                                        <form action="{{ route('all-plan.destroy', $plan->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
                         </td>
                     </tr>
                 @empty
