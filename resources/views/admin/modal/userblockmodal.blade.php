@@ -19,10 +19,14 @@
                         <label>Email</label>
                         <input type="text" name="email" id="modal_user_email" class="form-control" readonly>
                     </div>
-{{--                    <div class="form-group">--}}
-{{--                        <label>Wallet</label>--}}
-{{--                        <input type="text" name="wallet" id="modal_user_wallet" class="form-control">--}}
-{{--                    </div>--}}
+                    <div class="form-group">
+                        <label>Active Wallet</label>
+                        <input type="text" name="active_wallet" id="modal_user_wallet" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Deposit Wallet</label>
+                        <input type="text" name="deposit_wallet" id="modal_user_wallet" class="form-control">
+                    </div>
                     <div class="form-group">
                         <label>User Status</label>
                         <select id="modal_block_status" class="form-control" name="is_block">
