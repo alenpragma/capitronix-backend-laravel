@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'mobile',
         'deposit_wallet',
+        'active_wallet',
         'profit_wallet',
         'refer_by',
         'refer_code',
