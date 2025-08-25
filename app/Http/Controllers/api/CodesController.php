@@ -67,5 +67,15 @@ class CodesController extends Controller
         ]);
     }
 
+    public function codeHistory(Request $request)
+    {
+        $user = $request->user();
+        $codes = Code::where('code_owner', $user->id)->orderBy('created_at', 'desc')->get();
+        return response()->json([
+            'status' => true,
+            'codes' => $codes,
+        ]);
+    }
+
 
 }

@@ -6,10 +6,10 @@
         {{-- Country-wise Users Pie Chart --}}
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-body">
-                <h5 class="card-title fw-bold mb-4">Users by Country</h5>
-                <div id="countryPieChart" style="width: 100%; height: 400px;"></div>
+                <canvas id="countryPieChart" width="1500" height="350" style="width:350px; height:250px;"></canvas>
             </div>
         </div>
+
 
         {{-- Users Section --}}
         <div class="card shadow-sm mb-4 border-0">
@@ -71,41 +71,38 @@
             </div>
         </div>
     </div>
-    <canvas id="countryPieChart" style="width:100%; height:400px;"></canvas>
-@endsection
 
-@push('scripts')
-    {{-- Google Charts Loader --}}
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Load google chart library
-            google.charts.load('current', {'packages':['corechart']});
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('countryPieChart').getContext('2d');
 
-            // Draw chart when library loaded
-            google.charts.setOnLoadCallback(drawChart);
+            const countries = ["Bangladesh","united of america","US"];
+            const countryCounts = [1, 4, 1];
 
-            function drawChart() {
-                // Static data
-                var data = google.visualization.arrayToDataTable([
-                    ['Country', 'Users'],
-                    ['Bangladesh', 1],
-                    ['United of America', 4],
-                    ['US', 1]
-                ]);
+            // Generate random colors dynamically in JS
+            const backgroundColors = countries.map(() => '#' + Math.floor(Math.random()*16777215).toString(16));
 
-                var options = {
-                    title: 'Users by Country',
-                    pieHole: 0, // donut করতে চাইলে 0.4 দিন
-                    legend: { position: 'right', textStyle: { fontSize: 12 } },
-                    chartArea: { width: '80%', height: '80%' }
-                };
-
-                var chart = new google.visualization.PieChart(document.getElementById('countryPieChart'));
-                chart.draw(data, options);
-            }
+            const countryPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: countries,
+                    datasets: [{
+                        label: 'Users by Country',
+                        data: countryCounts,
+                        backgroundColor: backgroundColors,
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'right', labels: { usePointStyle: true } }
+                    }
+                }
+            });
         });
     </script>
-@endpush
-
+@endsection
 

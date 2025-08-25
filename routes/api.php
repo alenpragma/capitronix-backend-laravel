@@ -18,6 +18,7 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('profile', [UserController::class, 'UserProfile']);
     Route::post('active-account', [UserController::class, 'activeAccount']);
     Route::post('buy-code', [CodesController::class, 'buyCode']);
+    Route::get('codeHistory', [CodesController::class, 'codeHistory']);
     Route::post('profile/update', [AuthController::class, 'profileUpdate']);
     Route::post('kyc-submit', [UserController::class, 'kyc']);
     Route::get('team', [UserController::class, 'team']);
