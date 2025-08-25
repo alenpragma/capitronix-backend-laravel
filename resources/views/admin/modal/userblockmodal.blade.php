@@ -1,7 +1,7 @@
 <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{ route('users.updateStatus') }}" method="POST">
+            <form action="{{route('users.update')}}" method="POST">
                 @csrf
                 @method('PUT')
 
