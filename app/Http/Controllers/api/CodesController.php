@@ -71,9 +71,9 @@ class CodesController extends Controller
     {
         $user = $request->user();
         $codes = Code::where('code_owner', $user->id)
-            ->with('user:id,name') // শুধু user এর id, name আনবে
-            ->select('id', 'name', 'code_owner', 'created_at') // রিলেশনের জন্য id আর code_owner দরকার
-            ->orderBy('created_at', 'desc')
+            ->join('users', 'codes.code_owner', '=', 'users.id')
+            ->select('codes.id', 'codes.name as code_name', 'users.name as user_name')
+            ->orderBy('codes.created_at', 'desc')
             ->get();
         return response()->json([
             'status' => true,
