@@ -69,8 +69,8 @@
                                     data-id="{{ $user->id }}"
                                     data-name="{{ $user->name }}"
                                     data-email="{{ $user->email }}"
-                                    data-modal_active="{{ $user->active_wallet }}"
-                                    data-modal_deposit="{{ $user->deposit_wallet }}"
+                                    data-active="{{ $user->active_wallet }}"
+                                    data-deposit="{{ $user->deposit_wallet }}"
                                     data-block="{{ $user->is_block }}"
                                     data-toggle="modal"
                                     data-target="#actionModal">
