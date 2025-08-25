@@ -70,7 +70,11 @@ class CodesController extends Controller
     public function codeHistory(Request $request)
     {
         $user = $request->user();
-        $codes = Code::where('code_owner', $user->id)->with('user')->select('name')->orderBy('created_at', 'desc')->get();
+        $codes = Code::where('code_owner', $user->id)
+            ->with('user:id,name') // শুধু user এর id, name আনবে
+            ->select('id', 'name', 'code_owner', 'created_at') // রিলেশনের জন্য id আর code_owner দরকার
+            ->orderBy('created_at', 'desc')
+            ->get();
         return response()->json([
             'status' => true,
             'codes' => $codes,
