@@ -77,8 +77,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('countryPieChart').getContext('2d');
 
-            const countries = ["Bangladesh","united of america","US"];
-            const countryCounts = [1, 4, 1];
+            const countries = {{$countries}};
+            const countryCounts = {{$countryCounts}};
 
             // Generate random colors dynamically in JS
             const backgroundColors = countries.map(() => '#' + Math.floor(Math.random()*16777215).toString(16));
