@@ -83,7 +83,7 @@ class AuthServices
             'email'     => 'required|email|unique:users,email',
             'mobile'    => 'required|string|max:15|min:10',
             'country_code'    => 'required|string',
-            'country'    => 'required|string|max:15|min:10',
+            'country'    => 'required|string',
             'referCode' => 'nullable|string|max:8',
             'password'  => 'required|string|min:6',
         ]);
