@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ef846f03-2d52-422d-a247-eb7810106294" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/admin/PlansController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/admin/PlansController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_04_27_064646_create_package_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_04_27_064646_create_package_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pages/plan/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/pages/plan/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pages/plan/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/pages/plan/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/api/PackagesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/api/PackagesController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,6 +166,8 @@
       <path value="$PROJECT_DIR$/vendor/laravel/prompts" />
       <path value="$PROJECT_DIR$/vendor/fruitcake/php-cors" />
       <path value="$PROJECT_DIR$/vendor/dragonmantank/cron-expression" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php85" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php84" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -186,6 +183,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/imamhosen/PhpstormProjects/capitronix-backend-laravel",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -196,6 +194,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public/assets" />
     </key>
@@ -204,6 +205,9 @@
     <configuration name="Main" type="PestRunConfigurationType">
       <option name="pestRunnerSettings">
         <PestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
+      </option>
+      <option name="runnerSettings">
+        <PhpTestRunnerSettings configuration_file="$PROJECT_DIR$/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
       </option>
       <method v="2" />
     </configuration>
@@ -230,6 +234,7 @@
       <workItem from="1756039445059" duration="790000" />
       <workItem from="1756095327411" duration="5278000" />
       <workItem from="1756110308657" duration="13552000" />
+      <workItem from="1756200256663" duration="1200000" />
     </task>
     <servers />
   </component>

@@ -55,14 +55,8 @@ class PackagesController extends Controller
             ],401);
         }
 
-        if($package->stock <= $package->total_sell){
-            return response()->json([
-                'status' => false,
-                'message' => 'This BizNode is Stock out'
-            ]);
-        }
 
-        if ($user->wallet < $package->price) {
+        if ($user->deposit_wallet < $package->price) {
             return response()->json([
                 'status' => false,
                 'message' => 'Insufficient funds',
@@ -72,7 +66,7 @@ class PackagesController extends Controller
         DB::beginTransaction();
 
         try {
-            $user->wallet -= $package->price;
+            $user->deposit_wallet -= $package->price;
             $user->save();
             $this->transactionService->addNewTransaction(
                 $user->id,
@@ -146,7 +140,7 @@ class PackagesController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Package purchased successfully',
-                'wallet_balance' => $user->wallet,
+                'wallet_balance' => $user->deposit_wallet,
             ]);
 
         } catch (\Exception $e) {
