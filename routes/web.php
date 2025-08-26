@@ -28,7 +28,16 @@ Route::middleware('auth')->group(function () {
     //all user
     Route::get('users', [UsersController::class, 'index'])->name('users.index');
     Route::post('users/update', [UsersController::class, 'update'])->name('users.update');
-    Route::resource('all-plan', PlansController::class);
+    // Route::resource('all-plan', PlansController::class);
+    Route::resource('all-plan', PlansController::class)->names([
+        'index'   => 'admin.all-plan.index',
+        'create'  => 'admin.all-plan.create',
+        'store'   => 'admin.all-plan.store',
+        'show'    => 'admin.all-plan.show',
+        'edit'    => 'admin.all-plan.edit',
+        'update'  => 'admin.all-plan.update',
+        'destroy' => 'admin.all-plan.destroy',
+    ]);
     Route::resource('withdraw', WithdrawController::class);
     Route::resource('transactions', TransactionsController::class);
     Route::resource('kyc', KycController::class);

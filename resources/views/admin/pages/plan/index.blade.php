@@ -48,7 +48,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">All Plans</h4>
             <div class="d-flex gap-2 align-items-center">
-                <a href="{{ route('all-plan.create') }}" class="btn btn-success btn-sm">+ Add New Plan</a>
+                <a href="{{ route('admin.all-plan.create') }}" class="btn btn-success btn-sm">+ Add New Plan</a>
                 <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#importExportModal">
                     <i class="bi bi-box-arrow-down">Import/Export</i>
                 </button>
@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-md-3">
                         <button class="btn btn-primary" type="submit">Filter</button>
-                        <a href="{{ route('all-plan.index') }}" class="btn btn-secondary">Reset</a>
+                        <a href="{{ route('admin.all-plan.index') }}" class="btn btn-secondary">Reset</a>
                     </div>
                 </div>
             </form>
@@ -77,11 +77,12 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Min Amount</th>
-                    <th>Max Amount</th>
+                    <th>Price</th>
                     <th>Interest</th>
                     <th>Duration</th>
                     <th>Return Type</th>
+                    <th>Stock</th>
+                    <th>Total Sell</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -91,19 +92,20 @@
                     <tr>
                         <td>{{ $index + $plans->firstItem() }}</td>
                         <td>{{ $plan->name }}</td>
-                        <td>${{ number_format($plan->min_amount, 2) }}</td>
-                        <td>${{ number_format($plan->max_amount, 2) }}</td>
+                        <td>${{ number_format($plan->price, 2) }}</td>
                         <td>{{ $plan->interest_rate }}%</td>
                         <td>{{ $plan->duration == 0 ? 'Unlimited' : $plan->duration . ' days' }}</td>
                         <td>{{ ucfirst($plan->return_type) }}</td>
+                        <td>${{ $plan->stock }}</td>
+                        <td>${{ $plan->total_sell }}</td>
                         <td>
                             <span class="badge {{ $plan->active ? 'bg-success' : 'bg-danger' }}">
                                 {{ $plan->active ? 'Active' : 'Inactive' }}
                             </span>
                         </td>
                         <td class="d-flex gap-1">
-                            <a href="{{ route('all-plan.edit', $plan->id) }}" class="btn btn-sm btn-info">Edit</a>
-                                                        <form action="{{ route('all-plan.destroy', $plan->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                            <a href="{{ route('admin.all-plan.edit', $plan->id) }}" class="btn btn-sm btn-info">Edit</a>
+                                                        <form action="{{ route('admin.all-plan.destroy', $plan->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button class="btn btn-sm btn-danger">Delete</button>

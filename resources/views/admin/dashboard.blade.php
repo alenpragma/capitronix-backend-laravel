@@ -48,15 +48,28 @@
             </div>
         </div>
 
-        {{-- Deposits Section --}}
+        {{-- Deposit Wallet Section --}}
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-body">
-                <h5 class="card-title fw-bold mb-4">Deposits</h5>
+                <h5 class="card-title fw-bold mb-4">Deposit Wallet Report</h5>
                 <div class="row g-4">
                     <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['totalDeposits'], 2) }}" label="Total Deposits" bg="success" />
                     <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['todayDeposits'], 2) }}" label="Today Deposits" bg="warning" />
                     <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last7DaysDeposits'], 2) }}" label="Last 7 Days Deposits" bg="info" />
                     <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last30DaysDeposits'], 2) }}" label="Last 30 days Deposits" bg="secondary" />
+                </div>
+            </div>
+        </div>
+
+                {{-- Active Wallet Section --}}
+        <div class="card shadow-sm mb-4 border-0">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">Active Wallet Report</h5>
+                <div class="row g-4">
+                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['totalActiveDeposits'], 2) }}" label="Total Active Wallet" bg="success" />
+                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['todayActiveDeposits'], 2) }}" label="Today Active Wallet" bg="warning" />
+                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last7DaysActiveDeposits'], 2) }}" label="Last 7 Days Active Wallet" bg="info" />
+                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last30DaysActiveDeposits'], 2) }}" label="Last 30 days Active Wallet" bg="secondary" />
                 </div>
             </div>
         </div>

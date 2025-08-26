@@ -33,10 +33,22 @@ class AdminDashboardController extends Controller
                 'newUser' => User::where('created_at', '>=', now()->startOfDay()->addHours(5))->where('role', 'user')->count(),
 
 
-                'totalDeposits' => Deposit::sum('amount'),
-                'todayDeposits' => Deposit::whereDate('created_at', today())->sum('amount'),
-                'last7DaysDeposits' => Deposit::whereBetween('created_at', [now()->subDays(7), today()])->sum('amount'),
-                'last30DaysDeposits' => Deposit::whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
+
+                'totalDeposits' => User::sum('deposit_wallet'),
+                'todayDeposits' => User::whereDate('created_at', today())->sum('deposit_wallet'),
+                'last7DaysDeposits' => User::whereBetween('created_at', [now()->subDays(7), today()])->sum('deposit_wallet'),
+                'last30DaysDeposits' => User::whereBetween('created_at', [now()->subDays(30), today()])->sum('deposit_wallet'),
+
+                'totalActiveDeposits' => User::sum('active_wallet'),
+                'todayActiveDeposits' => User::whereDate('created_at', today())->sum('active_wallet'),
+                'last7DaysActiveDeposits' => User::whereBetween('created_at', [now()->subDays(7), today()])->sum('active_wallet'),
+                'last30DaysActiveDeposits' => User::whereBetween('created_at', [now()->subDays(30), today()])->sum('active_wallet'),
+
+
+                // 'totalDeposits' => Deposit::sum('amount'),
+                // 'todayDeposits' => Deposit::whereDate('created_at', today())->sum('amount'),
+                // 'last7DaysDeposits' => Deposit::whereBetween('created_at', [now()->subDays(7), today()])->sum('amount'),
+                // 'last30DaysDeposits' => Deposit::whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
 
                 // withdrawal
                 'totalWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->sum('amount'),
