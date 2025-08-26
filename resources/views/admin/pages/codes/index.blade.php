@@ -44,7 +44,7 @@
                 </tbody>
             </table>
 
-            {{ $codes->links() }}
+            {{ $codes->links('admin.layouts.partials.__pagination') }}
         </div>
     </div>
 @endsection
