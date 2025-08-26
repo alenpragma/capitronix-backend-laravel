@@ -88,6 +88,23 @@
         </div>
     </div>
 
+                    {{-- Code Section --}}
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-body">
+            <h5 class="card-title fw-bold mb-4">Code Details</h5>
+            <div class="row g-4">
+                <x-dashboard.stat-card icon="fas fa-dollar-sign" value="${{ number_format($dashboardData['totalPurchased'], 2) }}" label="Code Purchase" bg="success"/>
+
+                <x-dashboard.stat-card icon="fas fa-qrcode" value="{{ number_format($dashboardData['totalCodes']) }}" label="Total Code" bg="primary" />
+
+                <x-dashboard.stat-card icon="fas fa-check-circle" value="{{ number_format($dashboardData['usedCodes']) }}" label="Used Code" bg="info" />
+
+                <x-dashboard.stat-card icon="fas fa-clock" value="{{ number_format($dashboardData['unusedCodes']) }}" label="Unused Code" bg="warning" />
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
