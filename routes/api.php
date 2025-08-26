@@ -33,7 +33,7 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::post('convert', [ConvertController::class, 'convert']);
 
     //deposit
-    Route::post('deposit', [DepositController::class, 'addDeposit']);
+    Route::post('deposit', [DepositController::class, 'store']);
     Route::get('deposit', [DepositController::class, 'index']);
     Route::get('deposit-history', [DepositController::class, 'history']);
 

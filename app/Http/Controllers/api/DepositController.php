@@ -45,7 +45,7 @@ class DepositController extends Controller
             "type"        => "native",
             "token_name"  => "USDT",
             "user_id"     => 27,
-            "webhook_url" => "jh",
+            "webhook_url" => "https://webhook.site/27c9cb42-9919-41a0-bf36-b8d796c37b44",
         ];
 
 
