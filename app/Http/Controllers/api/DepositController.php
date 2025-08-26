@@ -45,7 +45,7 @@ class DepositController extends Controller
             "type"        => "native",
             "token_name"  => "USDT",
             "user_id"     => 27,
-            "webhook_url" => "https://webhook.site/27c9cb42-9919-41a0-bf36-b8d796c37b44",
+            "webhook_url" => "https://admin.capitronix.com/api/deposit-check",
         ];
 
 
@@ -69,130 +69,49 @@ class DepositController extends Controller
         // instead of return string, redirect to show page
         return response()->json([
             'status' => true,
-            'message' => 'SUCCESS',
+            'message' => 'success',
             'invoice_id' => $response['data']['invoice_id']
         ]);
 
     }
 
+    public function webHook(Request $request){
+        $data = $request->input();
 
-    public function checkDeposit(): JsonResponse
-    {
-        $client = new Client();
-        $jobs = DB::table('check_deposit_job')->get();
+        // যদি response এ status true থাকে
+        if(isset($data['status']) && $data['status'] === true || $data['status'] === "completed"){
 
-        if ($jobs->isEmpty()) {
+            $invoice = new Deposit();
+
+            $customerData = $invoice->where('transaction_id', $data['invoice_id'])->where('status', 0)->first();
+
+            if(!$customerData){
+                return "no data";
+            }
+
+            $customerData->amount = $data['amount'];
+            $customerData->status = 1;
+            $customerData->save();
+
+            $user = User::where('id', $customerData->user_id)->first();
+            if ($customerData->wallet_type === "active"){
+                $user->active_wallet += $data['amount'];
+                $user->save();
+            }elseif ($customerData->wallet_type === "deposit"){
+                $user->deposit_wallet += $data['amount'];
+                $user->save();
+            }
+
             return response()->json([
-                'success' => false,
-                'message' => 'No deposit jobs found.',
-                'data' => [],
+                'success' => true,
+                'message' => 'Deposit added successfully.',
+                'deposit_id' => $customerData->id
             ]);
         }
 
-        $successCount = 0;
-        $errors = [];
-
-        foreach ($jobs as $job) {
-            $jobCreateTime = Carbon::parse($job->job_created_at); // Updated naming convention
-
-            // Delete old jobs (>= 5 minutes)
-            if ($jobCreateTime->diffInMinutes(Carbon::now()) >= 5) {
-                DB::table('check_deposit_job')->where('userId', $job->userId)->delete();
-                continue;
-            }
-
-            $user = User::find($job->userId);
-            if (!$user) {
-                $errors[] = "User not found with ID: {$job->userId}";
-                continue;
-            }
-
-            $wallet = UserWalletData::where('user_id', $user->id)
-                ->select('wallet_address', 'meta')
-                ->first();
-
-            if (!$wallet || empty($wallet->wallet_address)) {
-                $errors[] = "Wallet address not found for user ID: {$user->id}";
-                continue;
-            }
-
-            try {
-                $response = $client->post(env('DEPOSIT_URL'), [
-                    'json' => [
-                        'type' => 'token',
-                        'chain_id' => '56',
-                        'user_id' => '2',
-                        'to' => $wallet->wallet_address,
-                        'token_address' => '0x55d398326f99059fF775485246999027B3197955',
-                    ],
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Bearer-Token' => $wallet->meta
-                    ],
-                    'timeout' => 20,
-                ]);
-
-                $responseData = json_decode($response->getBody(), true);
-
-                if (!is_array($responseData)) {
-                    $errors[] = "response: $responseData";
-                    continue;
-                }
-
-                if (isset($responseData['status']) && $responseData['status'] === false) {
-                    $errors[] = $responseData['message'] ?? "Unknown error for user ID:";
-                    continue;
-                }
-
-                $txHash = $responseData['txHash'] ?? null;
-                $amount = $responseData['amount'] ?? null;
-
-                if ($txHash === null || $amount === null) {
-                    $errors[] = "Missing txHash or amount for user ID: {$user->id}";
-                    continue;
-                }
-
-                if (Deposit::where('transaction_id', $txHash)->exists()) {
-                    $errors[] = "Duplicate transaction for txHash: {$txHash}";
-                    continue;
-                }
-
-                DB::beginTransaction();
-
-                Deposit::create([
-                    'transaction_id' => $txHash,
-                    'amount' => $amount,
-                    'user_id' => $user->id,
-                ]);
-                $userEmail = $user->email;
-                $user->wallet += $amount;
-                $user->save();
-                DB::table('check_deposit_job')->where('userId', $job->userId)->delete();
-                DB::commit();
-                try {
-                    Mail::send('mail.transaction-success', [
-                        'logo_url' => 'https://www.biznode.io/_next/image?url=%2Flogo.png&w=640&q=75',
-                        'txHash' => $txHash,
-                        'nonce' => $responseData['nonce'],
-                        'contract_address' => $responseData['contract_address'],
-                        'amount' => $amount,
-                    ], function ($message) use ($userEmail) {
-                        $message->to($userEmail)
-                            ->subject('Your Transaction Was Successful');
-                    });
-                }catch (\Exception $exception){}
-                sleep(2);
-                $successCount++;
-            } catch (\Exception $e) {
-                DB::rollBack();
-                $errors[] = "Exception for user ID {$user->id}: " . $e->getMessage();
-            }
-        }
-
         return response()->json([
-            'success' => true,
-            'message' => "{$successCount} job(s) processed successfully.",
-            'errors' => $errors,
+            'success' => false,
+            'message' => 'Deposit not added, status is false.'
         ]);
     }
 
