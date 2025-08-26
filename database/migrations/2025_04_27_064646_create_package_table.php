@@ -24,26 +24,6 @@ return new class extends Migration
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
-
-        DB::table('package')->insert([
-            'name' => 'Phase 1',
-            'price' => '500',
-            'interest_rate' => '10',
-            'duration' => '30',
-            'return_type' => 'daily',
-            'active' => '1',
-            'stock' => '5000',
-        ]);
-        DB::table('package')->insert([
-            'name' => 'Mini Node',
-            'price' => '250',
-            'interest_rate' => '10',
-            'duration' => '30',
-            'return_type' => 'daily',
-            'active' => '1',
-            'stock' => '50000',
-            'type' => 'mini'
-        ]);
     }
 
     /**
