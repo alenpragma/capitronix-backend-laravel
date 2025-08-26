@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Deposit;
 use App\Models\Transactions;
 use App\Models\withdraw_settings;
+use App\Models\Code;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,14 @@ class AdminDashboardController extends Controller
             $totalNetWithdrawals = Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->sum('amount');
             $withdrawChargeAmount = $chargePercent > 0 ? $totalNetWithdrawals * $chargePercent / (100 - $chargePercent) : 0;
 
+              $costPerCode = 25;
+
+            // Codes info
+            $totalCodes   = Code::count();
+            $usedCodes    = Code::where('status', 'used')->count();
+            $unusedCodes  = Code::where('status', 'unsed')->count();
+            $totalPurchased = $totalCodes * $costPerCode;
+
             return [
 
                 // user
@@ -33,16 +42,18 @@ class AdminDashboardController extends Controller
                 'newUser' => User::where('created_at', '>=', now()->startOfDay()->addHours(5))->where('role', 'user')->count(),
 
 
-
+                //deposit wallet
                 'totalDeposits' => User::sum('deposit_wallet'),
                 'todayDeposits' => User::whereDate('created_at', today())->sum('deposit_wallet'),
                 'last7DaysDeposits' => User::whereBetween('created_at', [now()->subDays(7), today()])->sum('deposit_wallet'),
                 'last30DaysDeposits' => User::whereBetween('created_at', [now()->subDays(30), today()])->sum('deposit_wallet'),
 
+                //active wallet
                 'totalActiveDeposits' => User::sum('active_wallet'),
                 'todayActiveDeposits' => User::whereDate('created_at', today())->sum('active_wallet'),
                 'last7DaysActiveDeposits' => User::whereBetween('created_at', [now()->subDays(7), today()])->sum('active_wallet'),
                 'last30DaysActiveDeposits' => User::whereBetween('created_at', [now()->subDays(30), today()])->sum('active_wallet'),
+
 
 
                 // 'totalDeposits' => Deposit::sum('amount'),
@@ -55,6 +66,15 @@ class AdminDashboardController extends Controller
                 'todayWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->whereDate('created_at', today())->sum('amount'),
                 'last30DaysWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
                'withdrawChargeAmount' => $withdrawChargeAmount,
+
+
+
+
+                // codes
+                'totalCodes'       => $totalCodes,
+                'usedCodes'        => $usedCodes,
+                'unusedCodes'      => $unusedCodes,
+                'totalPurchased'   => $totalPurchased,
 
             ];
         });
