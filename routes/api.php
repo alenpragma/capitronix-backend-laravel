@@ -34,7 +34,7 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
 
     //deposit
     Route::post('deposit', [DepositController::class, 'store']);
-    Route::get('deposit', [DepositController::class, 'index']);
+    //Route::get('deposit', [DepositController::class, 'index']);
     Route::get('deposit-history', [DepositController::class, 'history']);
 
     //network

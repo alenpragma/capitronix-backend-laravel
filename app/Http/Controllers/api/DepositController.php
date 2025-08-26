@@ -28,7 +28,7 @@ class DepositController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'wallet' => 'required|exists:deposits,wallet_type',
+            'wallet' => 'required',
             'amount' => 'required|min:1',
         ]);
 
@@ -59,13 +59,11 @@ class DepositController extends Controller
 
 
         // save to db
-        $deposit = new Transactions();
+        $deposit = new Deposit();
         $deposit->user_id    = $user->id;
         $deposit->amount     = $request->amount;
-        $deposit->token      = $response['data']['token_name'];
-        $deposit->invoice_id = $response['data']['invoice_id'];
-        $deposit->address = $response['data']['address'];
-        $deposit->created = $response['data']['created'];
+        $deposit->wallet_type      = $request->wallet;
+        $deposit->transaction_id = $response['data']['invoice_id'];
         $deposit->save();
 
         // instead of return string, redirect to show page
