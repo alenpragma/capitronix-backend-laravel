@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
             $table->string('transaction_id')->unique();
+            $table->enum('wallet_type', ['deposit', 'active']);
             $table->unsignedBigInteger('user_id');
             $table->decimal('amount', 15, 2);
             $table->boolean('status')->default(false);

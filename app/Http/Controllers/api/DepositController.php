@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Deposit;
+use App\Models\Transactions;
 use App\Models\User;
 use App\Models\UserWalletData;
 use App\Service\TransactionService;
@@ -21,27 +22,59 @@ class DepositController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function index(Request $request)
+
+    public function Store(Request $request)
     {
         $user = $request->user();
-        $wallet = UserWalletData::where('user_id', $user->id)->select('wallet_address')->first();
-        if($wallet){
-           $checkJob = DB::table('check_deposit_job')->where('userId', $user->id)->first();
-           if(!$checkJob){
-               DB::table('check_deposit_job')->insert([
-                   'userId' => $user->id,
-                   'job_created_at' => Carbon::now()
-               ]);
-           }
-            return response()->json([
-                'success' => true,
-                'data' => $wallet->wallet_address,
-            ]);
-        }
-        return response()->json([
-            'success' => false,
-            'message' => 'Wallet address not found',
+
+        $request->validate([
+            'wallet' => 'required|exists:deposits,wallet_type',
+            'amount' => 'required|min:1',
         ]);
+
+        $client = new Client();
+
+        $headers = [
+            'x-api-key'      => '9S3WW3P-JRB43DN-PBCJ23E-P9W96H3',
+            'Content-Type'   => 'application/json',
+        ];
+
+        $payload = [
+            "amount"      => $request->amount,
+            "chain_id"    => 9996,
+            "type"        => "native",
+            "token_name"  => "USDT",
+            "user_id"     => 27,
+            "webhook_url" => "jh",
+        ];
+
+
+        $payment = $client->request('POST', 'https://evm.blockmaster.info/api/create_invoice', [
+            'headers' => $headers,
+            'json'    => $payload
+        ]);
+
+
+        $response = json_decode($payment->getBody()->getContents(), true);
+
+
+        // save to db
+        $deposit = new Transactions();
+        $deposit->user_id    = $user->id;
+        $deposit->amount     = $request->amount;
+        $deposit->token      = $response['data']['token_name'];
+        $deposit->invoice_id = $response['data']['invoice_id'];
+        $deposit->address = $response['data']['address'];
+        $deposit->created = $response['data']['created'];
+        $deposit->save();
+
+        // instead of return string, redirect to show page
+        return response()->json([
+            'status' => true,
+            'message' => 'SUCCESS',
+            'invoice_id' => $response['data']['invoice_id']
+        ]);
+
     }
 
 
