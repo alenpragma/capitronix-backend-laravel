@@ -48,22 +48,23 @@ class PlansController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function addPlan(Request $request)
+    public function store(Request $request)
     {
-        return "dddd";
         $request->validate([
             'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
             'interest_rate' => 'required|numeric|min:0|max:100',
-            'duration' => 'nullable|integer|min:0',
-            'return_type' => 'required|in:daily,weekly,monthly',
+            'duration' => 'required|numeric|min:1',
+            'return_type' => 'required|in:daily,weekly,monthly,yearly',
+            'stock' => 'required|integer|min:0',
+            'active' => 'required|boolean',
         ]);
 
         try {
             Package::create($request->all());
             $this->clearPackageCache();
-            return redirect()->route('all-plan.index')->with('success', 'Plan created successfully.');
-        }catch (\Exception $exception){
+            return redirect()->route('admin.all-plan.index')->with('success', 'Plan created successfully.');
+        } catch (\Exception $exception) {
             return back()->with('error', $exception->getMessage());
         }
     }
@@ -93,17 +94,18 @@ class PlansController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'min_amount' => 'required|numeric|min:0',
-            'max_amount' => 'required|numeric|gte:min_amount',
+            'price' => 'required|numeric|min:0',
             'interest_rate' => 'required|numeric|min:0|max:100',
-            'duration' => 'nullable|integer|min:0',
-            'return_type' => 'required|in:daily,weekly,monthly',
+            'duration' => 'required|numeric|min:1',
+            'return_type' => 'required|in:daily,weekly,monthly,yearly',
+            'stock' => 'required|integer|min:0',
             'active' => 'required|boolean',
         ]);
+
         $plan = Package::findOrFail($id);
         $plan->update($request->all());
         $this->clearPackageCache();
-        return redirect()->route('all-plan.index')->with('success', 'Plan updated successfully.');
+        return redirect()->route('admin.all-plan.index')->with('success', 'Plan updated successfully.');
     }
 
     /**
