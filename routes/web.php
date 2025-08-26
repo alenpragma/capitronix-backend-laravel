@@ -26,8 +26,19 @@ Route::get('admin-withdraw', [CronController::class, 'UserWalletToAdminWallet'])
 Route::middleware('auth')->group(function () {
 
     //all user
-    Route::get('users', [UsersController::class, 'index'])->name('users.index');
-    Route::post('users/update', [UsersController::class, 'update'])->name('users.update');
+    // Route::get('users', [UsersController::class, 'index'])->name('users.index');
+    // Route::post('users/update', [UsersController::class, 'update'])->name('users.update');
+
+Route::resource('users', UsersController::class)->names([
+    'index'=>'admin.users.index',
+    'show'=>'admin.users.show',
+    'update'=>'admin.users.update',
+]);
+
+Route::post('users/update-wallet', [UsersController::class,'updateWallet'])->name('admin.users.update.wallet');
+Route::post('users/toggle-block/{user}', [UsersController::class,'toggleBlock'])->name('admin.users.toggleBlock');
+
+
     // Route::resource('all-plan', PlansController::class);
     Route::resource('all-plan', PlansController::class)->names([
         'index'   => 'admin.all-plan.index',

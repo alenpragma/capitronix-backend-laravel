@@ -38,26 +38,57 @@ class UsersController extends Controller
 
         return view('admin.pages.users.index', compact('users'));
     }
+     public function show($id)
+    {
+        $user = User::with('referrals.investors')->findOrFail($id);
+        $teamData = $user->teamDataByLevel();
+        return view('admin.pages.users.show', compact('user','teamData'));
+    }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $request->validate([
+            'name'=>'required|string|max:255',
+            'email'=>'required|email|unique:users,email,'.$user->id,
+            'password'=>'nullable|string|min:6'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if($request->password){
+            $user->password = bcrypt($request->password);
+        }
+        $user->save();
+
+        return redirect()->back()->with('success','User updated successfully.');
+    }
+
+    public function updateWallet(Request $request)
     {
         $user = User::findOrFail($request->user_id);
-        $user->update($request->all());
+        $wallet = $request->wallet_type;
+        $amount = floatval($request->amount);
 
-        $this->clearUserCache();
-
-        return redirect()->back()->with('success', 'User updated successfully');
-    }
-
-    private function clearUserCache()
-    {
-        $filters = ['active', 'inactive', 'blocked', 'unblocked', null];
-
-        for ($page = 1; $page <= 10; $page++) {
-            foreach ($filters as $filter) {
-                $key = "users_{$filter}_page_{$page}";
-                Cache::forget($key);
+        if($request->action === 'add'){
+            $user->$wallet += $amount;
+        } else {
+            if($user->$wallet < $amount){
+                return redirect()->back()->with('error','Insufficient balance.');
             }
+            $user->$wallet -= $amount;
         }
+        $user->save();
+
+        return redirect()->back()->with('success','Wallet updated successfully.');
     }
+
+    public function toggleBlock(User $user)
+    {
+        $user->is_block = !$user->is_block;
+        $user->save();
+
+        return redirect()->back()->with('success',$user->is_block ? 'User Blocked' : 'User Unblocked');
+    }
+
 }

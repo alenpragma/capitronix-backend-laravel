@@ -31,7 +31,7 @@
         </div>
 
         <div class="card-body table-responsive">
-            <form method="GET" action="{{ route('users.index') }}" class="mb-3">
+            <form method="GET" action="{{ route('admin.users.index') }}" class="mb-3">
                 <div class="row">
                     <div class="col-md-4">
                         <select name="filter" class="form-control">
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-md-3">
                         <button class="btn btn-primary" type="submit">Filter</button>
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Reset</a>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Reset</a>
                     </div>
                 </div>
             </form>
@@ -72,7 +72,12 @@
                     <tr>
                         <td>{{ $index + $users->firstItem() }}</td>
                         <td>{{ $user->created_at->format('Y-m-d H:i') }}</td>
-                        <td>{{ $user->name }}</td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="{{ route('admin.users.show', $user->id) }}">
+                            {{ $user->name }}
+                            </a>
+                            
+                        </td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->country }}</td>
                         <td>${{ number_format($user->deposit_wallet ?? 0, 2) }}</td>
@@ -90,7 +95,7 @@
                             </span>
                         </td>
                         <td>
-                            <button type="button"
+                            {{-- <button type="button"
                                     class="btn btn-sm btn-primary updateStatusBtn"
                                     data-id="{{ $user->id }}"
                                     data-name="{{ $user->name }}"
@@ -102,7 +107,10 @@
                                     data-toggle="modal"
                                     data-target="#actionModal">
                                 <i class="fas fa-edit"></i> Manage
-                            </button>
+                            </button> --}}
+                            <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-primary" title="View">
+                               View
+                            </a>
                         </td>
                     </tr>
                 @empty
