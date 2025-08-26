@@ -1,6 +1,6 @@
 <div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="actionModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{route('users.update')}}" method="POST">
+        <form action="" method="POST">
             @csrf
             <input type="hidden" name="user_id" id="modal_user_id">
             <div class="modal-content">
