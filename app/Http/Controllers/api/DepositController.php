@@ -122,11 +122,7 @@ class DepositController extends Controller
     {
         $user = $request->user();
         $history = Deposit::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(20);
-        try {
-            $this->checkDeposit($request);
-        }catch (\Exception $exception){
 
-        }
         return response()->json([
             'success' => true,
             'data' => $history->items(),
