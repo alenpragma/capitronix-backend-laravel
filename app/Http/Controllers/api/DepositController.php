@@ -78,7 +78,6 @@ class DepositController extends Controller
     public function webHook(Request $request){
         $data = $request->input();
 
-        // যদি response এ status true থাকে
         if(isset($data['status']) && $data['status'] === true || $data['status'] === "completed"){
 
             $invoice = new Deposit();
@@ -94,10 +93,10 @@ class DepositController extends Controller
             $customerData->save();
 
             $user = User::where('id', $customerData->user_id)->first();
-            if ($customerData->wallet_type === "active"){
+            if ($customerData->wallet_type == "active"){
                 $user->active_wallet += $data['amount'];
                 $user->save();
-            }elseif ($customerData->wallet_type === "deposit"){
+            }elseif ($customerData->wallet_type == "deposit"){
                 $user->deposit_wallet += $data['amount'];
                 $user->save();
             }
