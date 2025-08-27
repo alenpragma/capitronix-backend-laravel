@@ -85,6 +85,7 @@ class TransactionsController extends Controller
             $receiver->increment($walletColumn, $validated['amount']);
 
             Transactions::create([
+                'transaction_id'=> Transactions::generateTransactionId(),
                 'user_id'     => $sender->id,
                 'amount'      => $validated['amount'],
                 'wallet_type' => $validated['wallet'],
@@ -94,6 +95,7 @@ class TransactionsController extends Controller
             ]);
 
             Transactions::create([
+                'transaction_id' => Transactions::generateTransactionId(),,
                 'user_id'     => $receiver->id,
                 'amount'      => $validated['amount'],
                 'wallet_type' => $validated['wallet'],
