@@ -236,9 +236,9 @@ class TransactionsController extends Controller
         $walletAddress = $validatedData['wallet'];
         $walletType = $validatedData['wallet_type'];
 
-        $chargePercent = $withdrawSettings->charge; // withdraw settings থেকে charge %
-        $chargeAmount = $amount * $chargePercent / 100; // charge amount হিসাব
-        $totalAmount = $amount + $chargeAmount; // wallet থেকে deduct হবে এইটুকু
+        $chargePercent = $withdrawSettings->charge; 
+        $chargeAmount = $amount * $chargePercent / 100; 
+        $totalAmount = $amount + $chargeAmount; 
 
         if ($user->{$walletType} < $totalAmount) {
             return response()->json([
@@ -250,8 +250,8 @@ class TransactionsController extends Controller
         Transactions::create([
             'transaction_id' => Transactions::generateTransactionId(),
             'user_id'        => $user->id,
-            'amount'         => $amount,
-            'charge'         => $chargeAmount, // <-- এখানে charge database এ add হবে
+            'amount'         => $totalAmount,
+            'charge'         => $chargeAmount,
             'remark'         => 'withdrawal',
             'type'           => '-',
             'status'         => 'Pending',
