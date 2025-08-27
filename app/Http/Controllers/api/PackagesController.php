@@ -98,8 +98,7 @@ class PackagesController extends Controller
             //level 1 bonus function here
             $level1 = $user->referredBy()->first();
             if($level1){
-                $bonus = $package->price * 6 / 100;
-                $bonus = $bonus/0.02;
+                $bonus = $package->price * 5 / 100;
                 if ($level1->is_active){
                     $level1->increment('profit_wallet', $bonus);
                     $level1->save();
@@ -116,6 +115,24 @@ class PackagesController extends Controller
                 $level2 = $level1->referredBy()->first();
                 if($level2){
                     $bonus = $package->price * 2 / 100;
+                    $bonus = $bonus/0.02;
+                    if ($level2->is_active){
+                        $level2->increment('profit_wallet', $bonus);
+                        $level2->save();
+                        $this->transactionService->addNewTransaction(
+                            "$level2->id",
+                            "$bonus",
+                            "referral_commission",
+                            "+",
+                            "Level 2 Referral From $level2->name"
+                        );
+                    }
+                }
+
+                // Level 2 Logic
+                $level3 = $level2->referredBy()->first();
+                if($level3){
+                    $bonus = $package->price * 1 / 100;
                     $bonus = $bonus/0.02;
                     if ($level2->is_active){
                         $level2->increment('profit_wallet', $bonus);
