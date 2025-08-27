@@ -201,19 +201,24 @@ class TransactionsController extends Controller
     //     }
     // }
 
+
+
     public function withdraw(Request $request)
     {
         $withdrawSettings = withdraw_settings::first();
 
-        if($withdrawSettings->status == 0){
+        if (!$withdrawSettings) {
             return response()->json([
                 'status' => false,
-                'message' => 'Withdrawals are temporarily disabled. Please contact support'
-            ]);
+                'message' => 'Withdraw settings not found.'
+            ], 404);
         }
 
-        if (!$withdrawSettings) {
-            return back()->with('error', 'Withdraw settings not found.');
+        if ($withdrawSettings->status == 0) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Withdrawals are temporarily disabled. Please contact support.'
+            ], 403);
         }
 
         $min = $withdrawSettings->min_withdraw;
@@ -221,37 +226,47 @@ class TransactionsController extends Controller
         $charge = $withdrawSettings->charge;
 
         $validatedData = $request->validate([
-            'amount' => ['required', 'numeric', "min:$min", "max:$max"],
-            'wallet' => ['required', 'string', 'min:10', 'max:70'],
+            'amount'      => ['required', 'numeric', "min:$min", "max:$max"],
+            'wallet'      => ['required', 'string', 'min:10', 'max:70'],
+            'wallet_type' => ['required', 'in:deposit_wallet,active_wallet,profit_wallet'],
         ]);
 
         $user = $request->user();
         $amount = $validatedData['amount'];
-        $amount = $amount + ($amount * $charge / 100);
-        $wallet = $validatedData['wallet'];
+        $walletAddress = $validatedData['wallet'];
+        $walletType = $validatedData['wallet_type'];
 
+        $totalAmount = $amount + ($amount * $charge / 100);
 
-
-        if ($user->wallet < $amount) {
+        if ($user->{$walletType} < $totalAmount) {
             return response()->json([
                 'status' => false,
-                'message' => 'Insufficient balance',
+                'message' => 'Insufficient balance in your selected wallet.',
             ], 400);
-        } else {
-            $this->transactionService->addNewTransaction(
-                "$user->id",
-                "$amount",
-                "withdrawal",
-                "-",
-                "$wallet", 'Pending');
-            $user->wallet -= $amount;
-            $user->save();
-            return response()->json([
-                'status' => true,
-                'message' => 'Your withdrawal request has been received and is currently pending.',
-                'wallet_balance' => $user->wallet,
-            ]);
         }
+
+        Transactions::create([
+            'transaction_id' => Transactions::generateTransactionId(),
+            'user_id'        => $user->id,
+            'amount'         => $totalAmount,
+            'remark'         => 'withdrawal',
+            'type'           => '-',
+            'status'         => 'Pending',
+            'details'        => 'Withdrawal request from ' . $walletType . ' to ' . $walletAddress,
+            'currency'       => 'USDT',
+        ]);
+
+        $user->{$walletType} -= $totalAmount;
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Your withdrawal request has been received and is currently pending.',
+            'wallet_balance' => $user->{$walletType},
+            'wallet_type' => $walletType
+        ]);
     }
+
+
 
 }
