@@ -104,7 +104,7 @@ class PackagesController extends Controller
 
             foreach ($bonusPercents as $level => $percent) {
                 if (!$referrer) {
-                    break; // আর parent নাই
+                    break;
                 }
 
                 $bonus = $package->price * $percent / 100;
@@ -116,7 +116,7 @@ class PackagesController extends Controller
                         $bonus,
                         "referral_commission",
                         "+",
-                        "Level " . ($level+1) . " Referral From $user->name"
+                        "Level " . ($level+1) . " Referral From $referrer->name"
                     );
                 }
 
