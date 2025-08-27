@@ -26,19 +26,25 @@ class WithdrawController extends Controller
         return view('admin.pages.withdraw.index', compact('withdrawals'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'status' => 'required|in:pending,completed,rejected',
         ]);
 
         $withdraw = Transactions::findOrFail($id);
+        $walletColumn = $withdraw->wallet_type . '_wallet'; // deposit_wallet / active_wallet / profit_wallet
+        $netAmount = $withdraw->amount + $withdraw->charge; // total refund if rejected
+
         if ($request->status == 'rejected') {
-            User::where('id', $withdraw->user_id)->increment('wallet', $withdraw->amount);
+            // Refund user
+            User::where('id', $withdraw->user_id)->increment($walletColumn, $netAmount);
             $withdraw->status = $request->status;
             $withdraw->save();
-            return redirect()->route('withdraw.index')->with('success', 'Withdrawal status updated.');
+
+            return redirect()->route('withdraw.index')->with('success', 'Withdrawal rejected and amount refunded.');
         }
+
         $withdraw->status = $request->status;
         $withdraw->save();
 

@@ -31,6 +31,7 @@
                     <th>Wallet Address</th>
                     <th>User</th>
                     <th>Amount</th>
+                    <th>Charge</th>
                     <th>Status</th>
                     <th>Created At</th>
                     <th>Action</th>
@@ -43,7 +44,7 @@
                         <td>{{ $withdraw->details }}</td>
                         <td>{{ $withdraw->user->name ?? 'N/A' }}</td>
                         <td>${{ number_format($withdraw->amount, 2) }}</td>
-
+                        <td>${{ number_format($withdraw->charge, 2) }}</td>
                         <td>
                             <span class="badge
                                 @if($withdraw->status == 'Pending') badge-warning
@@ -105,7 +106,7 @@
 
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center">No withdrawals found.</td>
+                        <td colspan="9" class="text-center">No withdrawals found.</td>
                     </tr>
                 @endforelse
                 </tbody>
