@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status',['Pending','Paid','Completed','Rejected']);
             $table->string('details')->nullable();
             $table->string('currency')->default('USDT');
+            $table->enum('wallet_type',['active','deposit','profit_wallet'])->default('profit_wallet');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

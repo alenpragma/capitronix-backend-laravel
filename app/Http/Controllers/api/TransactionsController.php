@@ -9,7 +9,6 @@ use App\Models\withdraw_settings;
 use App\Service\TransactionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 
 class TransactionsController extends Controller
 {
@@ -45,6 +44,82 @@ class TransactionsController extends Controller
             'from' => $transactions->firstItem(),
         ]);
     }
+
+
+    public function transfer(Request $request)
+    {
+        $validated = $request->validate([
+            'amount' => 'required|numeric|min:10',
+            'wallet' => 'required|string|in:active,deposit',
+            'email'  => 'required|exists:users,email',
+        ]);
+
+        $sender   = $request->user();
+        $receiver = User::where('email', $validated['email'])->first();
+
+        if ($sender->id === $receiver->id) {
+            return response()->json([
+                'status'  => false,
+                'message' => "You cannot transfer to yourself",
+            ], 400);
+        }
+
+        $walletMap = [
+            'active'  => 'active_wallet',
+            'deposit' => 'deposit_wallet',
+        ];
+        $walletColumn = $walletMap[$validated['wallet']];
+
+        try {
+            DB::beginTransaction();
+
+            if ($sender->{$walletColumn} < $validated['amount']) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => "You don't have enough balance in {$validated['wallet']} wallet",
+                ], 400);
+            }
+
+            $sender->decrement($walletColumn, $validated['amount']);
+
+            $receiver->increment($walletColumn, $validated['amount']);
+
+            Transactions::create([
+                'user_id'     => $sender->id,
+                'amount'      => $validated['amount'],
+                'wallet_type' => $validated['wallet'],
+                'type'        => '-',
+                'status'      => 'Completed',
+                'details'     => "Transfer to {$receiver->email}",
+            ]);
+
+            Transactions::create([
+                'user_id'     => $receiver->id,
+                'amount'      => $validated['amount'],
+                'wallet_type' => $validated['wallet'],
+                'remark'=> 'transfer',
+                'type'        => '+',
+                'status'      => 'Completed',
+                'details'     => "Received from {$sender->email}",
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status'  => true,
+                'message' => "Transaction successful from {$validated['wallet']} wallet",
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status'  => false,
+                'message' => "Transaction failed",
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
 
 
