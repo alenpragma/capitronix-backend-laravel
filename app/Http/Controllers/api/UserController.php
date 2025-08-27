@@ -144,8 +144,19 @@ class UserController extends Controller
         $validate = $request->validate([
             'email' => 'required',
         ]);
-        $email = $validate['email'];
-        return User::where('email', $email)->first();
+        $email = $request->input("email");
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid email'
+            ]);
+        }else{
+            return response()->json([
+                'status' => true,
+                'data' => $user
+            ]);
+        }
     }
 
 
