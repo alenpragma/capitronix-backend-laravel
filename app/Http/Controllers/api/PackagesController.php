@@ -96,7 +96,7 @@ class PackagesController extends Controller
             DB::commit();
 
             //level 1 bonus function here
-            $level1 = $user->referredBy()->first();
+            $level1 = $user->referredBy()->first() ?? null;
             if($level1){
                 $bonus = $package->price * 5 / 100;
                 if ($level1->is_active){
@@ -112,7 +112,7 @@ class PackagesController extends Controller
                 }
 
                 // Level 2 Logic
-                $level2 = $level1->referredBy()->first();
+                $level2 = $level1->referredBy()->first() ?? null;
                 if($level2){
                     $bonus = $package->price * 2 / 100;
                     if ($level2->is_active){
@@ -129,7 +129,7 @@ class PackagesController extends Controller
                 }
 
                 // Level 2 Logic
-                $level3 = $level2->referredBy()->first();
+                $level3 = $level2->referredBy()->first() ?? null;
                 if($level3){
                     $bonus = $package->price * 1 / 100;
                     if ($level2->is_active){
