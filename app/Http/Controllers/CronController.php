@@ -97,16 +97,16 @@ class CronController extends Controller
 
         // Commission structure (percent)
         $commissionRates = [
-            1 => 0.20,
-            2 => 0.10,
-            3 => 0.05,
-            4 => 0.05,
-            5 => 0.03,
-            6 => 0.02,
-            7 => 0.02,
-            8 => 0.01,
-            9 => 0.01,
-            10 => 0.01,
+            1 => 12,
+            2 => 10,
+            3 => 7,
+            4 => 5,
+            5 => 3,
+            6 => 3,
+            7 => 2,
+            8 => 2,
+            9 => 1,
+            10 => 1,
         ];
 
         while ($currentReferrer && $level <= 10) {
