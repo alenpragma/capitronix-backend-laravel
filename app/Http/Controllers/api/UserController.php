@@ -139,5 +139,14 @@ class UserController extends Controller
             ]);
     }
 
+    public function findUser(Request $request): JsonResponse
+    {
+        $validate = $request->validate([
+            'email' => 'required',
+        ]);
+        $email = $validate['email'];
+        return User::where('email', $email)->first();
+    }
+
 
 }
