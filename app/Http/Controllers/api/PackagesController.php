@@ -115,7 +115,6 @@ class PackagesController extends Controller
                 $level2 = $level1->referredBy()->first();
                 if($level2){
                     $bonus = $package->price * 2 / 100;
-                    $bonus = $bonus/0.02;
                     if ($level2->is_active){
                         $level2->increment('profit_wallet', $bonus);
                         $level2->save();
@@ -133,7 +132,6 @@ class PackagesController extends Controller
                 $level3 = $level2->referredBy()->first();
                 if($level3){
                     $bonus = $package->price * 1 / 100;
-                    $bonus = $bonus/0.02;
                     if ($level2->is_active){
                         $level2->increment('profit_wallet', $bonus);
                         $level2->save();
