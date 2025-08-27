@@ -131,7 +131,7 @@ class UsersController extends Controller
                 'type'           => '-',
                 'status'         => 'completed',
                 'details'        => '$'.$amount.' deducted from '.$wallet.' by Admin',
-                'remark'         => 'withdrawal',
+                'remark'         => 'deduct',
             ]);
 
             $message = 'Balance reduced successfully.';
