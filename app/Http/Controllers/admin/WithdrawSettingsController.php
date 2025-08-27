@@ -23,7 +23,7 @@ class WithdrawSettingsController extends Controller
             'status' => 'required|in:0,1',
         ]);
 
-        $settings = withdraw_settings::first(); // Assuming only 1 row
+        $settings = withdraw_settings::first();
         $settings->update($request->only(['min_withdraw', 'max_withdraw', 'charge', 'status']));
 
         return redirect()->back()->with('success', 'Withdraw settings updated successfully.');

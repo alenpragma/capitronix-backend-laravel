@@ -19,6 +19,14 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
+        DB::table('withdraw_settings')->insert([
+            'min_withdraw' => 10, 
+            'max_withdraw' => 5000, 
+            'charge'       => 5, 
+            'status'       => true,
+            'created_at'   => now(),
+            'updated_at'   => now(),
+        ]);
     }
 
     /**
