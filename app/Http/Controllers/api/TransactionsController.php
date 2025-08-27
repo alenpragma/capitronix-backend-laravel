@@ -95,7 +95,7 @@ class TransactionsController extends Controller
             ]);
 
             Transactions::create([
-                'transaction_id' => Transactions::generateTransactionId(),,
+                'transaction_id' => Transactions::generateTransactionId(),
                 'user_id'     => $receiver->id,
                 'amount'      => $validated['amount'],
                 'wallet_type' => $validated['wallet'],
