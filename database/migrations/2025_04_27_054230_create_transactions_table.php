@@ -16,12 +16,12 @@ return new class extends Migration
             $table->string('transaction_id');
             $table->unsignedBigInteger('user_id');
             $table->decimal('amount', 15, 2);
-            $table->enum('remark',['deposit','withdrawal','transfer','referral_commission','interest','package_purchased','convert','activation','generation_income','code_purchased']);
+            $table->enum('remark',['deposit','withdrawal','transfer','referral_commission','interest','package_purchased','convert','activation','generation_income','code_purchased','deduct']);
             $table->enum('type',['-','+']);
             $table->enum('status',['Pending','Paid','Completed','Rejected']);
             $table->string('details')->nullable();
             $table->string('currency')->default('USDT');
-            $table->enum('wallet_type',['active','deposit','profit_wallet'])->default('profit_wallet');
+            $table->enum('wallet_type',['active','deposit','profit'])->default('profit');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

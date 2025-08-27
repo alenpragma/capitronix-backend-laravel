@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('wallet_type', ['deposit', 'active']);
             $table->unsignedBigInteger('user_id');
             $table->decimal('amount', 15, 2);
+            $table->enum('remark', ['auto', 'manual'])->default('auto');
             $table->boolean('status')->default(false);
             $table->timestamps();
         });
