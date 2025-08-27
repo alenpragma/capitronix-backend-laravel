@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Deposit;
 use App\Models\User;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -66,22 +68,80 @@ class UsersController extends Controller
 
     public function updateWallet(Request $request)
     {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'wallet_type' => 'required|string',
+            'amount' => 'required|numeric|min:0.01',
+            'action' => 'required|in:add,reduce',
+        ]);
+
         $user = User::findOrFail($request->user_id);
         $wallet = $request->wallet_type;
         $amount = floatval($request->amount);
 
-        if($request->action === 'add'){
-            $user->$wallet += $amount;
-        } else {
-            if($user->$wallet < $amount){
-                return redirect()->back()->with('error','Insufficient balance.');
-            }
-            $user->$wallet -= $amount;
+        if (!in_array($wallet, ['deposit_wallet','active_wallet','profit_wallet'])) {
+            return redirect()->back()->with('error', 'Invalid wallet type.');
         }
-        $user->save();
 
-        return redirect()->back()->with('success','Wallet updated successfully.');
+        if ($request->action === 'add') {
+
+            if (in_array($wallet, ['deposit_wallet','active_wallet'])) {
+                $user->$wallet += $amount;
+                $user->save();
+
+                Deposit::create([
+                    'transaction_id' => Transactions::generateTransactionId(),
+                    'user_id'        => $user->id,
+                    'amount'         => $amount,
+                    'status'         => true,
+                    'wallet_type'    => $wallet === 'deposit_wallet' ? 'deposit' : 'active',
+                    'remark'         => 'manual',
+                ]);
+            }
+
+            if ($wallet === 'profit_wallet') {
+                $user->$wallet += $amount;
+                $user->save();
+
+                Transactions::create([
+                    'transaction_id' => Transactions::generateTransactionId(),
+                    'user_id'        => $user->id,
+                    'amount'         => $amount,
+                    'type'           => '+',
+                    'status'         => 'completed',
+                    'details'        => '$'.$amount.' added to profit wallet by Admin',
+                    'remark'         => 'deposit',
+                ]);
+            }
+
+            $message = 'Balance added successfully.';
+        } 
+        else {
+            if ($user->$wallet < $amount) {
+                return redirect()->back()->with('error', 'Insufficient balance.');
+            }
+
+            $user->$wallet -= $amount;
+            $user->save();
+
+            Transactions::create([
+                'transaction_id' => Transactions::generateTransactionId(),
+                'user_id'        => $user->id,
+                'amount'         => $amount,
+                'type'           => '-',
+                'status'         => 'completed',
+                'details'        => '$'.$amount.' deducted from '.$wallet.' by Admin',
+                'remark'         => 'withdrawal',
+            ]);
+
+            $message = 'Balance reduced successfully.';
+        }
+
+        return redirect()->back()->with('success', $message);
     }
+
+
+
 
     public function toggleBlock(User $user)
     {

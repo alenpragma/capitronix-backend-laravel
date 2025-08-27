@@ -43,16 +43,21 @@ class AdminDashboardController extends Controller
 
 
                 //deposit wallet
-                'totalDeposits' => User::sum('deposit_wallet'),
-                'todayDeposits' => User::whereDate('created_at', today())->sum('deposit_wallet'),
-                'last7DaysDeposits' => User::whereBetween('created_at', [now()->subDays(7), today()])->sum('deposit_wallet'),
-                'last30DaysDeposits' => User::whereBetween('created_at', [now()->subDays(30), today()])->sum('deposit_wallet'),
+                'totalDeposits' => Deposit::where('wallet_type', 'deposit')->sum('amount'),
+                'todayDeposits' => Deposit::where('wallet_type', 'deposit')->whereDate('created_at', today())->sum('amount'),
+                'autoDeposits' => Deposit::where('wallet_type', 'deposit')->where('remark', 'auto')->sum('amount'),
+                'manualDeposits' => Deposit::where('wallet_type', 'deposit')->where('remark', 'manual')->sum('amount'),
+                'last7DaysDeposits' => Deposit::where('wallet_type', 'deposit')->whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])->sum('amount'),
+                'last30DaysDeposits' => Deposit::where('wallet_type', 'deposit')->whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
+
 
                 //active wallet
-                'totalActiveDeposits' => User::sum('active_wallet'),
-                'todayActiveDeposits' => User::whereDate('created_at', today())->sum('active_wallet'),
-                'last7DaysActiveDeposits' => User::whereBetween('created_at', [now()->subDays(7), today()])->sum('active_wallet'),
-                'last30DaysActiveDeposits' => User::whereBetween('created_at', [now()->subDays(30), today()])->sum('active_wallet'),
+                'totalActiveDeposits' => Deposit::where('wallet_type', 'active')->sum('amount'),
+                'todayActiveDeposits' => Deposit::where('wallet_type', 'active')->whereDate('created_at', today())->sum('amount'),
+                'autoActiveDeposits' => Deposit::where('wallet_type', 'active')->where('remark', 'auto')->sum('amount'),
+                'manualActiveDeposits' => Deposit::where('wallet_type', 'active')->where('remark', 'manual')->sum('amount'),
+                'last7DaysActiveDeposits' => Deposit::where('wallet_type', 'active')->whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])->sum('amount'),
+                'last30DaysActiveDeposits' => Deposit::where('wallet_type', 'active')->whereBetween('created_at', [now()->subDays(30)->startOfDay(), now()->endOfDay()])->sum('amount'),
 
 
 
