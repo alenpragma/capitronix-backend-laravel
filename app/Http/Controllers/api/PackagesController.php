@@ -55,7 +55,6 @@ class PackagesController extends Controller
             ],401);
         }
 
-
         if ($user->deposit_wallet < $package->price) {
             return response()->json([
                 'status' => false,
@@ -66,8 +65,11 @@ class PackagesController extends Controller
         DB::beginTransaction();
 
         try {
+            // deduct balance
             $user->deposit_wallet -= $package->price;
             $user->save();
+
+            // add transaction
             $this->transactionService->addNewTransaction(
                 $user->id,
                 $package->price,
@@ -78,6 +80,7 @@ class PackagesController extends Controller
                 "USDT"
             );
 
+            // create investor
             Investor::create([
                 'user_id' => $user->id,
                 'package_name' => $packageName,
@@ -91,67 +94,43 @@ class PackagesController extends Controller
                 'last_cron' => now(),
             ]);
 
-            //$invest_level = referrals_settings::first();
-
             DB::commit();
 
-            //level 1 bonus function here
-            $level1 = $user->referredBy()->first() ?? null;
-            if($level1){
-                $bonus = $package->price * 5 / 100;
-                if ($level1->is_active){
-                    $level1->increment('profit_wallet', $bonus);
-                    $level1->save();
+            /**
+             * Referral Bonus Distribution (3 levels)
+             */
+            $bonusPercents = [5, 2, 1]; // level 1, 2, 3
+            $referrer = $user->referredBy()->first(); // 1st level parent
+
+            foreach ($bonusPercents as $level => $percent) {
+                if (!$referrer) {
+                    break; // আর parent নাই
+                }
+
+                $bonus = $package->price * $percent / 100;
+                if ($referrer->is_active) {
+                    $referrer->increment('profit_wallet', $bonus);
+
                     $this->transactionService->addNewTransaction(
-                        "$level1->id",
-                        "$bonus",
+                        $referrer->id,
+                        $bonus,
                         "referral_commission",
                         "+",
-                        "Level 1 Referral From $user->name",
+                        "Level " . ($level+1) . " Referral From $user->name"
                     );
                 }
 
-                // Level 2 Logic
-                $level2 = $level1->referredBy()->first() ?? null;
-                if($level2){
-                    $bonus = $package->price * 2 / 100;
-                    if ($level2->is_active){
-                        $level2->increment('profit_wallet', $bonus);
-                        $level2->save();
-                        $this->transactionService->addNewTransaction(
-                            "$level2->id",
-                            "$bonus",
-                            "referral_commission",
-                            "+",
-                            "Level 2 Referral From $level2->name"
-                        );
-                    }
-                }
-
-                // Level 3 Logic
-//                $level3 = $level2->referredBy()->first() ?? null;
-//                if($level3){
-//                    $bonus = $package->price * 1 / 100;
-//                    if ($level3->is_active){
-//                        $level3->increment('profit_wallet', $bonus);
-//                        $level3->save();
-//                        $this->transactionService->addNewTransaction(
-//                            "$level3->id",
-//                            "$bonus",
-//                            "referral_commission",
-//                            "+",
-//                            "Level 2 Referral From $level2->name"
-//                        );
-//                    }
-//                }
+                // move to next upline
+                $referrer = $referrer->referredBy()->first();
             }
 
+            // clear cache
             Cache::forget('admin_dashboard_data');
             Cache::forget('packages_active_page_1');
             Cache::forget('packages_inactive_page_1');
 
-            $package->total_sell++;
-            $package->save();
+            $package->increment('total_sell');
+
             return response()->json([
                 'status' => true,
                 'message' => 'Package purchased successfully',

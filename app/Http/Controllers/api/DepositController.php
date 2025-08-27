@@ -41,10 +41,11 @@ class DepositController extends Controller
 
         $payload = [
             "amount"      => $request->amount,
-            "chain_id"    => 9996,
-            "type"        => "native",
+            "chain_id"    => 56,
+            "type"        => "token",
             "token_name"  => "USDT",
             "user_id"     => 27,
+            "contract_address" => "0x55d398326f99059fF775485246999027B3197955",
             "webhook_url" => "https://admin.capitronix.com/api/deposit-check",
         ];
 
