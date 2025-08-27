@@ -129,21 +129,21 @@ class PackagesController extends Controller
                 }
 
                 // Level 3 Logic
-                $level3 = $level2->referredBy()->first() ?? null;
-                if($level3){
-                    $bonus = $package->price * 1 / 100;
-                    if ($level3->is_active){
-                        $level3->increment('profit_wallet', $bonus);
-                        $level3->save();
-                        $this->transactionService->addNewTransaction(
-                            "$level3->id",
-                            "$bonus",
-                            "referral_commission",
-                            "+",
-                            "Level 2 Referral From $level2->name"
-                        );
-                    }
-                }
+//                $level3 = $level2->referredBy()->first() ?? null;
+//                if($level3){
+//                    $bonus = $package->price * 1 / 100;
+//                    if ($level3->is_active){
+//                        $level3->increment('profit_wallet', $bonus);
+//                        $level3->save();
+//                        $this->transactionService->addNewTransaction(
+//                            "$level3->id",
+//                            "$bonus",
+//                            "referral_commission",
+//                            "+",
+//                            "Level 2 Referral From $level2->name"
+//                        );
+//                    }
+//                }
             }
 
             Cache::forget('admin_dashboard_data');
