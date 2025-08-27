@@ -92,6 +92,7 @@ class TransactionsController extends Controller
                 'type'        => '-',
                 'status'      => 'Completed',
                 'details'     => "Transfer to {$receiver->email}",
+                'remark'      => 'transfer',
             ]);
 
             Transactions::create([
