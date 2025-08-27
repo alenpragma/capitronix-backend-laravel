@@ -28,6 +28,7 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('transactions', [TransactionsController::class, 'transactions']);
     Route::get('invest-history', [PackagesController::class, 'InvestHistory']);
     Route::get('cancel-invest', [PackagesController::class, 'cancelInvest']);
+    Route::post('find-user', [UserController::class, 'findUser']);
     Route::post('transfer', [TransactionsController::class, 'transfer']);
     Route::post('withdraw', [TransactionsController::class, 'withdraw']);
     Route::post('convert', [ConvertController::class, 'convert']);
@@ -54,7 +55,7 @@ Route::post('reset-password',[AuthController::class, 'ResetPassword']);
 Route::get('cron',[CronController::class, 'cronJob']);
 Route::get('trx-cron',[CronController::class, 'paymentCheck']);
 Route::post('deposit-check', [DepositController::class, 'webHook']);
-Route::post('find-user', [UserController::class, 'findUser']);
+
 
 
 require __DIR__ . '/auths.php';
