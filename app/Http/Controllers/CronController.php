@@ -34,10 +34,12 @@ class CronController extends Controller
             ->where('day', $todayName)
             ->first();
 
-        $investors = Investor::where('status', 1)
-            ->where('return_type', 'daily')->where('status',1)
-            ->where('next_cron', '<=', Carbon::now()->subHours(24))
-            ->orderBy('next_cron', 'asc')->where('total_due_day', '>', 0)->get();
+//        $investors = Investor::where('status', 1)
+//            ->where('return_type', 'daily')->where('status',1)
+//            ->where('next_cron', '<=', Carbon::now()->subHours(24))
+//            ->orderBy('next_cron', 'asc')->where('total_due_day', '>', 0)->get();
+
+        $investors = Investor::all();
 
 
 
