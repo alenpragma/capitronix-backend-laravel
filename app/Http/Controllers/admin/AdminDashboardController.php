@@ -28,10 +28,10 @@ class AdminDashboardController extends Controller
               $costPerCode = 25;
 
             // Codes info
-            $totalCodes   = Code::count();
-            $usedCodes    = Code::where('status', 'used')->count();
-            $unusedCodes  = Code::where('status', 'active')->count();
-            $totalPurchased = $totalCodes * $costPerCode;
+            $totalCodes   = Code::count() ?? 0;
+            $usedCodes    = Code::where('status', 'used')->count() ?? 0;
+            $unusedCodes  = Code::where('status', 'active')->count() ?? 0;
+            $totalPurchased = $totalCodes * $costPerCode ?? 0;
 
             return [
 
