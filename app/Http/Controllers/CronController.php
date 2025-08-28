@@ -129,7 +129,7 @@ class CronController extends Controller
                             (string)$bonus,
                             'generation_income',
                             '+',
-                            "Level {$level} Referral From {$referrer->name}"
+                            "Level {$level} Referral From {$currentReferrer->name}"
                         );
                     }
                 }
