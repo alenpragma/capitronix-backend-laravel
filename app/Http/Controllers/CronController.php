@@ -119,9 +119,7 @@ class CronController extends Controller
                     ->with('investors')
                     ->count();
 
-                $hasInvestment = Investor::where('user_id', $currentReferrer->id)->exists();
-
-                if ($activeDirects >= $level && $hasInvestment) {
+                if ($activeDirects >= $level) {
                     $bonus = ($baseAmount * $commissionRates[$level]) / 100;
 
                     if ($bonus > 0) {
