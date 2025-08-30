@@ -113,13 +113,14 @@ class CronController extends Controller
         while ($currentReferrer && $level <= 10) {
 
             if (isset($commissionRates[$level]) && $currentReferrer->is_active) {
-                // Count active directs once per referrer
-                $activeDirects = $currentReferrer->referrals()
+                // Active + Investor referrals count
+                $activeInvestorDirects = $currentReferrer->referrals()
                     ->where('is_active', true)
-                    ->with('investors')
+                    ->whereHas('investors')
                     ->count();
 
-                if ($activeDirects >= $level) {
+
+                if ($activeInvestorDirects >= $level) {
                     $bonus = ($baseAmount * $commissionRates[$level]) / 100;
 
                     if ($bonus > 0) {
