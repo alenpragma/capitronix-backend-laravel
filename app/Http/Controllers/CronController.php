@@ -92,7 +92,7 @@ class CronController extends Controller
 
 
 
-    private function addReferralBonus(User $referrer, $baseAmount): void
+    private function addReferralBonus(User $referrer, float $baseAmount): void
     {
         $currentReferrer = $referrer->referredBy()->first();
         $level = 1;
@@ -112,21 +112,24 @@ class CronController extends Controller
 
         while ($currentReferrer && $level <= 10) {
 
-            if ($currentReferrer->is_active && isset($commissionRates[$level])) {
-
+            if (isset($commissionRates[$level]) && $currentReferrer->is_active) {
+                // Count active directs once per referrer
                 $activeDirects = $currentReferrer->referrals()
                     ->where('is_active', true)
+                    ->with('investors')
                     ->count();
-                $isInvestor = Investor::where('user_id', $currentReferrer->id)->count();
-                if ($activeDirects >= $level && $isInvestor > 0) {
+
+                $hasInvestment = Investor::where('user_id', $currentReferrer->id)->exists();
+
+                if ($activeDirects >= $level && $hasInvestment) {
                     $bonus = ($baseAmount * $commissionRates[$level]) / 100;
 
                     if ($bonus > 0) {
                         $currentReferrer->increment('profit_wallet', $bonus);
 
                         $this->transactionService->addNewTransaction(
-                            (string)$currentReferrer->id,
-                            (string)$bonus,
+                            (string) $currentReferrer->id,
+                            (string) $bonus,
                             'generation_income',
                             '+',
                             "Level {$level} Referral From {$referrer->name}"
@@ -139,6 +142,7 @@ class CronController extends Controller
             $level++;
         }
     }
+
 
 
 

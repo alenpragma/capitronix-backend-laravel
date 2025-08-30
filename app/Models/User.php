@@ -161,17 +161,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $total = 0;
 
-        // Direct referrals (level-1) সহ investors relation আনা হলো
         $referrals = $this->referrals()->with('investors')->get();
 
         foreach ($referrals as $referral) {
-            // ওই referral এর নিজের মোট investment
             $investment = $referral->investors->sum('investment');
 
-            // যোগ করা হলো
             $total += $investment;
 
-            // ওই referral এর নিচের লেভেলগুলো (recursive)
             $total += $referral->totalTeamInvestment();
         }
 
