@@ -97,7 +97,6 @@ class CronController extends Controller
         $currentReferrer = $referrer->referredBy()->first();
         $level = 1;
 
-        // Commission structure (percent)
         $commissionRates = [
             1 => 12,
             2 => 10,
@@ -129,13 +128,12 @@ class CronController extends Controller
                             (string)$bonus,
                             'generation_income',
                             '+',
-                            "Level {$level} Referral From {$currentReferrer->name}"
+                            "Level {$level} Referral From {$referrer->name}"
                         );
                     }
                 }
             }
 
-            // move to upper referrer
             $currentReferrer = $currentReferrer->referredBy()->first();
             $level++;
         }

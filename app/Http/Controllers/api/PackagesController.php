@@ -108,7 +108,8 @@ class PackagesController extends Controller
                 }
 
                 $bonus = $package->price * $percent / 100;
-                if ($referrer->is_active) {
+                $checkIsInvestor = Investor::where('user_id', $referrer->id)->where('package_id', $package->id)->count();
+                if ($checkIsInvestor > 0) {
                     $referrer->increment('profit_wallet', $bonus);
 
                     $this->transactionService->addNewTransaction(
