@@ -117,7 +117,7 @@ class PackagesController extends Controller
                         $bonus,
                         "referral_commission",
                         "+",
-                        "Level " . ($level+1) . " Referral From $referrer->name"
+                        "Level " . ($level+1) . " Referral From $user->name"
                     );
                 }
 
