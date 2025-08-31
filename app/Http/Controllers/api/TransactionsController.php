@@ -249,11 +249,11 @@ class TransactionsController extends Controller
         Transactions::create([
             'transaction_id' => Transactions::generateTransactionId(),
             'user_id'        => $user->id,
-            'amount'         => $request->input('amount'),
+            'amount'         => $totalAmount,
             'remark'         => 'withdrawal',
             'type'           => '-',
             'status'         => 'Pending',
-            'details'        => 'Withdrawal request from ' . $walletType . ' to ' . $walletAddress .' charge 5%',
+            'details'        => 'Withdrawal request from ' . $walletType . ' to ' . $walletAddress,
             'currency'       => 'USDT',
         ]);
 
