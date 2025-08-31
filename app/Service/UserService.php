@@ -34,7 +34,7 @@ class UserService
 
         $total_active_team = $user->referrals()->where('is_active',1)->count();
         $total_inactive_team = $user->referrals()->where('is_active',0)->count();
-        $nextReword =  Investor::where('user_id', $user->id)->where('remark','next_cron')->first()->created_at ?? null;
+        $nextReword =  Investor::where('user_id', $user->id)->where('remark','next_cron')->first();
         return response()->json([
             'status' => true,
             'message' => 'User Profile Retrieved Successfully',
@@ -72,7 +72,7 @@ class UserService
                 'totalEarning' => $totalEarning,
                 'totalReferBonus' => $totalReferBonus,
                 'generation_income' => Transactions::where('user_id', $user->id)->where('remark','generation_income')->sum('amount'),
-                'next_reword_time' =>$nextReword,
+                'next_reword_time' =>$nextReword->next_cron ?? null,
             ]
         ]);
     }
