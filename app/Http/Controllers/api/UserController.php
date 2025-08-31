@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Code;
 use App\Models\Investor;
+use App\Models\Transactions;
 use App\Models\User;
 use App\Service\TransactionService;
 use App\Service\UserService;
@@ -75,7 +76,8 @@ class UserController extends Controller
                 'is_active' => $referral->is_active,
                 'created_at' => $referral->created_at,
                 'investment' => Investor::where('user_id', $referral->id)->sum('investment'),
-                'team' => $this->getTeamRecursive($referral, $level + 1)
+                'team' => $this->getTeamRecursive($referral, $level + 1),
+                'total_earned' => Transactions::where('user_id', $referral->id)->whereIn('remark', ['referral_commission', 'interest','generation_income'])->sum('amount'),
             ];
         }
         return $team;
