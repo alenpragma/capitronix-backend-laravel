@@ -108,7 +108,7 @@ class PackagesController extends Controller
                 }
 
                 $bonus = $package->price * $percent / 100;
-                $checkIsInvestor = Investor::where('user_id', $referrer->id)->where('package_id', $package->id)->count();
+                $checkIsInvestor = Investor::where('user_id', $referrer->id)->count();
                 if ($checkIsInvestor > 0) {
                     $referrer->increment('profit_wallet', $bonus);
 
@@ -129,8 +129,6 @@ class PackagesController extends Controller
             Cache::forget('admin_dashboard_data');
             Cache::forget('packages_active_page_1');
             Cache::forget('packages_inactive_page_1');
-
-            $package->increment('total_sell');
 
             return response()->json([
                 'status' => true,
