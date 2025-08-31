@@ -42,7 +42,8 @@
                         <td>{{ $index + $withdrawals->firstItem() }}</td>
                         <td>{{ $withdraw->details }}</td>
                         <td>{{ $withdraw->user->name ?? 'N/A' }}</td>
-                        <td>${{ number_format($withdraw->amount - ($withdraw->amount * 0.10), 3) }}</td>
+                        <td>${{ number_format($withdraw->amount - ($withdraw->amount * 0.05), 3) }}</td>
+
 
                         <td>
                             <span class="badge
