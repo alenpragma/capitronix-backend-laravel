@@ -18,7 +18,7 @@ class AdminDashboardController extends Controller
     {
 
 
-        $dashboardData = Cache::remember('admin_dashboard_data', now()->second(1000), function () {
+        $dashboardData = Cache::remember('admin_dashboard_data', now()->hour(1), function () {
 
             $withdrawSettings = withdraw_settings::first();
             $chargePercent = $withdrawSettings ? $withdrawSettings->charge : 0;

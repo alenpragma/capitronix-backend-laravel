@@ -125,7 +125,7 @@ class AuthServices
             $user->notify(new VerifyEmail());
 
             DB::commit();
-
+            Cache::forget('admin_dashboard_data');
             return response()->json([
                 'success' => true,
                 'message' => 'Account created successfully. Please login',
