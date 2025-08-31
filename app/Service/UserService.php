@@ -9,6 +9,7 @@ use App\Models\Transactions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,7 +35,7 @@ class UserService
 
         $total_active_team = $user->referrals()->where('is_active',1)->count();
         $total_inactive_team = $user->referrals()->where('is_active',0)->count();
-        $nextReword =  Investor::where('user_id', $user->id)->first();
+        $nextReword =  DB::table('daily_cron_time')->where('name','daily')->first();
         return response()->json([
             'status' => true,
             'message' => 'User Profile Retrieved Successfully',
@@ -72,7 +73,7 @@ class UserService
                 'totalEarning' => $totalEarning,
                 'totalReferBonus' => $totalReferBonus,
                 'generation_income' => Transactions::where('user_id', $user->id)->where('remark','generation_income')->sum('amount'),
-                'next_reword_time' =>$nextReword->next_cron ?? null,
+                'next_reword_time' =>$nextReword->next_cron_time ?? null,
             ]
         ]);
     }
