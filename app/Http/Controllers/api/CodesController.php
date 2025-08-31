@@ -80,7 +80,7 @@ class CodesController extends Controller
                 'users.name as user_name',
                 'codes.created_at'
             )
-            ->orderBy('codes.created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
 
