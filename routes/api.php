@@ -13,6 +13,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\UserNetworkController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('user/package', [PackagesController::class, 'getPackages']);
 //user
 Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('profile', [UserController::class, 'UserProfile']);
@@ -24,7 +25,6 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('team', [UserController::class, 'team']);
     Route::get('direct-refer', [UserController::class, 'getDirectReferrals']);
     Route::post('buy-package', [PackagesController::class, 'BuyPackage']);
-    Route::get('package', [PackagesController::class, 'getPackages']);
     Route::get('transactions', [TransactionsController::class, 'transactions']);
     Route::get('invest-history', [PackagesController::class, 'InvestHistory']);
     Route::get('cancel-invest', [PackagesController::class, 'cancelInvest']);
