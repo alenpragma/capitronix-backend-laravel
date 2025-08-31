@@ -35,7 +35,7 @@ class UsersController extends Controller
                     break;
             }
 
-            return $query->orderBy('created_at', 'desc')->paginate(15);
+            return $query->orderBy('id', 'desc')->paginate(15);
         });
 
         return view('admin.pages.users.index', compact('users'));
