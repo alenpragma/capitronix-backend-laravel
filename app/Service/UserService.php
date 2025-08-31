@@ -34,7 +34,7 @@ class UserService
 
         $total_active_team = $user->referrals()->where('is_active',1)->count();
         $total_inactive_team = $user->referrals()->where('is_active',0)->count();
-        $nextReword =  Investor::where('user_id', $user->id)->where('remark','next_cron')->first();
+        $nextReword =  Investor::where('user_id', $user->id)->first();
         return response()->json([
             'status' => true,
             'message' => 'User Profile Retrieved Successfully',
