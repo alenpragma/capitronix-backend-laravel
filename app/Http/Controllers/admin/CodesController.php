@@ -8,7 +8,7 @@ use App\Models\Code;
 class CodesController extends Controller
 {
     public function index(){
-        $codes = Code::paginate(10);
+        $codes = Code::orderBy('id', 'desc')->paginate(15);
         return view('admin.pages.codes.index', compact('codes'));
     }
 }
