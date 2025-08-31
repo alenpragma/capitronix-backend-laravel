@@ -92,55 +92,53 @@ class CronController extends Controller
 
 
 
-    private function addReferralBonus(User $referrer, float $baseAmount): void
-    {
-        $currentReferrer = $referrer->referredBy()->first();
-        $level = 1;
+private function addReferralBonus(User $referrer, $baseAmount): void
+{
+    $currentReferrer = $referrer->referredBy()->first();
+    $level = 1;
 
-        $commissionRates = [
-            1 => 12,
-            2 => 10,
-            3 => 7,
-            4 => 5,
-            5 => 3,
-            6 => 3,
-            7 => 2,
-            8 => 2,
-            9 => 1,
-            10 => 1,
-        ];
+    $commissionRates = [
+        1 => 12,
+        2 => 10,
+        3 => 7,
+        4 => 5,
+        5 => 3,
+        6 => 3,
+        7 => 2,
+        8 => 2,
+        9 => 1,
+        10 => 1,
+    ];
 
-        while ($currentReferrer && $level <= 10) {
+    while ($currentReferrer && $level <= 10) {
 
-            if (isset($commissionRates[$level]) && $currentReferrer->is_active) {
-                // Active + Investor referrals count
-                $activeInvestorDirects = $currentReferrer->referrals()
-                    ->where('is_active', true)
-                    ->whereHas('investors')
-                    ->count();
+        if ($currentReferrer->is_active && isset($commissionRates[$level])) {
 
+            $activeDirects = $currentReferrer->referrals()
+                ->where('is_active', true)
+                ->count();
+            $isInvestor = Investor::where('user_id', $currentReferrer->id)->count();
+            if ($activeDirects >= $level && $isInvestor > 0) {
+                $bonus = ($baseAmount * $commissionRates[$level]) / 100;
 
-                if ($activeInvestorDirects >= $level) {
-                    $bonus = ($baseAmount * $commissionRates[$level]) / 100;
+                if ($bonus > 0) {
+                    $currentReferrer->increment('profit_wallet', $bonus);
 
-                    if ($bonus > 0) {
-                        $currentReferrer->increment('profit_wallet', $bonus);
-
-                        $this->transactionService->addNewTransaction(
-                            (string) $currentReferrer->id,
-                            (string) $bonus,
-                            'generation_income',
-                            '+',
-                            "Level {$level} Referral From {$referrer->name}"
-                        );
-                    }
+                    $this->transactionService->addNewTransaction(
+                        (string)$currentReferrer->id,
+                        (string)$bonus,
+                        'generation_income',
+                        '+',
+                        "Level {$level} Referral From {$referrer->name}"
+                    );
                 }
             }
-
-            $currentReferrer = $currentReferrer->referredBy()->first();
-            $level++;
         }
+
+        $currentReferrer = $currentReferrer->referredBy()->first();
+        $level++;
     }
+}
 
 
 
