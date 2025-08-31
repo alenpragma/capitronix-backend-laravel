@@ -73,7 +73,7 @@ class UserService
                 'totalEarning' => $totalEarning,
                 'totalReferBonus' => $totalReferBonus,
                 'generation_income' => Transactions::where('user_id', $user->id)->where('remark','generation_income')->sum('amount'),
-                'next_reword_time' =>$nextReword->next_cron_time ?? null,
+                'next_reword_time' => $totalInvestment >0 ? $nextReword->next_cron_time : null,
             ]
         ]);
     }
