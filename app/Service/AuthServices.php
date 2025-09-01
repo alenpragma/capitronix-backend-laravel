@@ -126,7 +126,7 @@ class AuthServices
             // $user->notify(new VerifyEmail());
 
             $dashboardUrl = url('https://www.capitronix.com/dashboard');
-            $user->notify(new WelcomeEmail($user->name, $dashboardUrl));
+            $user->notify(new WelcomeEmail($user->name));
 
             DB::commit();
             Cache::forget('admin_dashboard_data');

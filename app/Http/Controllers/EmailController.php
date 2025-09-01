@@ -54,7 +54,7 @@ class EmailController extends Controller
 
         $dashboardUrl = url('www.capitronix.com/dashboard');
 
-        $user->notify(new WelcomeEmail($user->name, $dashboardUrl));
+        $user->notify(new WelcomeEmail($user->name));
 
         return response()->json(['message' => 'Welcome email sent!']);
     }
