@@ -13,10 +13,22 @@ use App\Http\Controllers\admin\WithdrawController;
 use App\Http\Controllers\admin\WithdrawSettingsController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HolidayController;
+use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
+});
+
+Route::get('/test', function () {
+      $dashboardUrl = url('https://www.capitronix.com/dashboard');
+      $user = \App\Models\User::where('email', 'kgcemonbd@gmail.com')->first();
+    return  $user->notify(new WelcomeEmail(
+        $user->name,
+        $user->email,
+        'ierieirek',
+        $dashboardUrl
+    ));
 });
 
 Route::get('/dashboard',[AdminDashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
