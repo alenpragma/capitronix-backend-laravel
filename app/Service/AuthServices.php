@@ -3,18 +3,14 @@
 namespace App\Service;
 
 use App\Models\User;
-use App\Models\UserWalletData;
-use GuzzleHttp\Client;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Notifications\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthServices
 {
@@ -124,14 +120,18 @@ class AuthServices
 
             // Send verification notification
             // $user->notify(new VerifyEmail());
+            $dashboardUrl = url('/dashboard');
+            $data = [
+                'userName'     => $user->name,
+                'userEmail'    => $user->email,
+                'userPassword' => $request->input('password'), // example password
+                'dashboardUrl' => $dashboardUrl,
+            ];
 
-            $dashboardUrl = url('https://www.capitronix.com/dashboard');
-            $user->notify(new WelcomeEmail(
-                $user->name,
-                $user->email,
-                $request->input('password'),
-                $dashboardUrl
-            ));
+            Mail::send('mail.Welcome', $data, function ($message) use ($user) {
+                $message->to($user->email)
+                    ->subject('Welcome to Capitronix 🎉');
+            });
 
             DB::commit();
             Cache::forget('admin_dashboard_data');
