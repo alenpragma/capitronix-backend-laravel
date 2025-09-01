@@ -21,32 +21,35 @@
                 <div class="row g-4">
                     @php
                         $users = [
-                            ['label' => 'Total Users', 'value' => $dashboardData['totalUser'], 'icon' => 'fas fa-user', 'bg' => 'bg-success'],
-                            ['label' => 'Active Users', 'value' => $dashboardData['activeUser'], 'icon' => 'fas fa-users-cog', 'bg' => 'bg-warning'],
-                            ['label' => 'Blocked Users', 'value' => $dashboardData['blockUser'], 'icon' => 'fas fa-user-slash', 'bg' => 'bg-danger'],
-                            ['label' => 'New Users', 'value' => $dashboardData['newUser'], 'icon' => 'fas fa-user-plus', 'bg' => 'bg-primary'],
+                            ['label' => 'Total Users', 'value' => $dashboardData['totalUser'], 'icon' => 'fas fa-user', 'bg' => 'bg-success', 'filter' => 'all'],
+                            ['label' => 'Active Users', 'value' => $dashboardData['activeUser'], 'icon' => 'fas fa-users-cog', 'bg' => 'bg-warning', 'filter' => 'active'],
+                            ['label' => 'Blocked Users', 'value' => $dashboardData['blockUser'], 'icon' => 'fas fa-user-slash', 'bg' => 'bg-danger', 'filter' => 'blocked'],
+                            ['label' => 'New Users', 'value' => $dashboardData['newUser'], 'icon' => 'fas fa-user-plus', 'bg' => 'bg-primary', 'filter' => 'new'],
                         ];
                     @endphp
 
                     @foreach ($users as $user)
                         <div class="col-md-3">
-                            <div class="d-flex justify-content-between align-items-center border rounded p-3 h-100 bg-light hover-shadow">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon-box {{ $user['bg'] }} bg-opacity-75 text-white rounded d-flex justify-content-center align-items-center me-3" style="width: 48px; height: 48px;">
-                                        <i class="{{ $user['icon'] }}"></i>
+                            <a href="{{ route('admin.users.index', ['filter' => $user['filter']]) }}" class="text-decoration-none">
+                                <div class="d-flex justify-content-between align-items-center border rounded p-3 h-100 bg-light hover-shadow">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box {{ $user['bg'] }} bg-opacity-75 text-white rounded d-flex justify-content-center align-items-center me-3" style="width: 48px; height: 48px;">
+                                            <i class="{{ $user['icon'] }}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold fs-5">{{ $user['value'] }}</div>
+                                            <small class="text-muted">{{ $user['label'] }}</small>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="fw-bold fs-5">{{ $user['value'] }}</div>
-                                        <small class="text-muted">{{ $user['label'] }}</small>
-                                    </div>
+                                    <i class="fas fa-arrow-right text-muted"></i>
                                 </div>
-                                <a href="/users"><i class="fas fa-arrow-right text-muted"></i></a>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>
             </div>
         </div>
+
 
         {{-- Deposit Wallet Section --}}
         <div class="card shadow-sm mb-4 border-0">
