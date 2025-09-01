@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('user/package', [PackagesController::class, 'getPackages']);
 //user
 Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
+    Route::post('update-password',[AuthController::class, 'updatePassword']);
     Route::get('profile', [UserController::class, 'UserProfile']);
     Route::post('active-account', [UserController::class, 'activeAccount']);
     Route::post('buy-code', [CodesController::class, 'buyCode']);
@@ -44,7 +45,6 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
 
 //EmailSendSystem
 Route::prefix('user')->middleware(['throttle:3,1'])->group(function () {
-    Route::post('update-password',[AuthController::class, 'updatePassword']);
     Route::post('/email/verification-notification',[EmailController::class,'sendVerificationEmail'])->middleware('auth:sanctum');
     Route::get('/verify-email/{id}/{hash}',[EmailController::class,'verify'])->middleware(['signed'])->name('verification.verify');
     Route::post('/welcome-email', [EmailController::class, 'welcomeEmail'])->middleware('auth:sanctum');
