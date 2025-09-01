@@ -12,15 +12,19 @@ class WelcomeEmail extends Notification
     use Queueable;
 
     protected $userName;
+    protected $userEmail;
+    protected $userPassword;
     protected $dashboardUrl;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($userName)
+    public function __construct($userName, $userEmail, $userPassword, $dashboardUrl)
     {
         $this->userName = $userName;
-        $this->dashboardUrl = 'https://www.capitronix.com/dashboard';
+        $this->userEmail = $userEmail;
+        $this->userPassword = $userPassword;
+        $this->dashboardUrl = $dashboardUrl;
     }
 
     /**
@@ -40,8 +44,10 @@ class WelcomeEmail extends Notification
     {
         return (new MailMessage)
                     ->subject('Welcome to ' . config('app.name'))
-                    ->view('mail.Welcome', [
+                    ->view('mail.welcome', [
                         'userName' => $this->userName,
+                        'userEmail' => $this->userEmail,
+                        'userPassword' => $this->userPassword,
                         'dashboardUrl' => $this->dashboardUrl
                     ]);
     }

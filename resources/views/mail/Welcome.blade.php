@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Capitronix</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,6 +40,16 @@
             font-size: 16px;
             line-height: 1.5;
         }
+        .login-info {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .login-info p {
+            margin: 5px 0;
+            font-family: monospace;
+        }
         .button {
             display: inline-block;
             margin-top: 20px;
@@ -64,20 +75,25 @@
             <h2 style="color: white">Welcome to Capitronix</h2>
         </div>
         <div class="content">
-            <h1>Hello, {{ $userName }}!</h1>
-            <p>
-                Thank you for joining <strong>Capitronix</strong>. We're thrilled to have you on board.
-                Start exploring our platform and make the most out of our services.
-            </p>
-            <p>
-                Click the button below to visit your dashboard and get started:
-            </p>
+            <h1>Hello, Mr. {{ $userName }}!</h1>
+            <p>Welcome to Capitronix! 🎉 You’ve just taken the first step toward smarter investing.</p>
+            <p>Your account has been created successfully. Here are your login details:</p>
+            
+            <div class="login-info">
+                <p>🔑 <strong>Login Information</strong></p>
+                <p>E-mail: {{ $userEmail }}</p>
+                <p>Password: {{ $userPassword }}</p>
+            </div>
+
+            <p>With our tools, insights, and expert strategies, managing your investments has never been easier. Log in, explore your dashboard, and start building your financial future today.</p>
+            <p>We’re glad to have you on board!</p>
+
             <a href="{{ $dashboardUrl }}" class="button">Go to Dashboard</a>
-            <p style="margin-top: 20px;">
-                If you have any questions, feel free to <a href="mailto:support@capitronix.com">contact us</a>. We're always here to help!
-            </p>
         </div>
         <div class="footer">
+            Best,<br>
+            The Capitronix Team<br>
+            🌐 <a href="https://www.capitronix.com">www.capitronix.com</a> | 📧 <a href="mailto:support@capitronix.com">support@capitronix.com</a><br>
             &copy; {{ date('Y') }} Capitronix. All rights reserved.
         </div>
     </div>
