@@ -22,14 +22,22 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-      $dashboardUrl = url('https://www.capitronix.com/dashboard');
-      $user = \App\Models\User::where('email', 'kgcemonbd@gmail.com')->first();
-      return Mail::to($user->email)->send(new WelcomeEmail(
-          $user->name,
-          $user->email,
-          'ierieirek',
-          $dashboardUrl
-      ));
+    $dashboardUrl = url('https://www.capitronix.com/dashboard');
+    $user = \App\Models\User::where('email', 'kgcemonbd@gmail.com')->first();
+
+    $data = [
+        'userName'     => $user->name,
+        'userEmail'    => $user->email,
+        'userPassword' => 'ierieirek', // example password
+        'dashboardUrl' => $dashboardUrl,
+    ];
+
+    Mail::send('emails.welcome', $data, function ($message) use ($user) {
+        $message->to($user->email)
+            ->subject('Welcome to Capitronix 🎉');
+    });
+
+    return "✅ Test mail sent to " . $user->email;
 });
 
 Route::get('/dashboard',[AdminDashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
