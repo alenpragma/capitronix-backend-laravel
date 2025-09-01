@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class WelcomeEmail extends Notification implements ShouldQueue
+class WelcomeEmail extends Notification implements ShouldQueue, \Illuminate\Contracts\Mail\Mailable
 {
     use Queueable;
 
