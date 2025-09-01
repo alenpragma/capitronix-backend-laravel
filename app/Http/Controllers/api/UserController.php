@@ -37,7 +37,8 @@ class UserController extends Controller
             'status' => true,
             'user' => $user->only(['email', 'name', 'is_active', 'created_at']),
             'my_earnings' => Transactions::where('user_id', $user->id)->whereIn('remark', ['referral_commission', 'interest','generation_income'])->sum('amount'),
-            'team' => $team
+            'team' => $team,
+            'my_team_invest' => $user->totalTeamInvestment()
         ]);
     }
 
