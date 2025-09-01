@@ -120,7 +120,7 @@ class AuthServices
 
             // Send verification notification
             // $user->notify(new VerifyEmail());
-            $dashboardUrl = url('/dashboard');
+            $dashboardUrl = url('https://www.capitronix.com/dashboard');
             $data = [
                 'userName'     => $user->name,
                 'userEmail'    => $user->email,
