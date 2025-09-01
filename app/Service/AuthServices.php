@@ -190,7 +190,7 @@ class AuthServices
             }
 
             $imagePath = $request->file('image')->store('profile_images', 'public');
-            $user->image = $imagePath;
+            $user->image = url("storage/{$imagePath}");
         }
 
         // Save user data
