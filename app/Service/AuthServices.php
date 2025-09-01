@@ -126,7 +126,12 @@ class AuthServices
             // $user->notify(new VerifyEmail());
 
             $dashboardUrl = url('https://www.capitronix.com/dashboard');
-            $user->notify(new WelcomeEmail($user->name));
+            $user->notify(new WelcomeEmail(
+                $user->name,
+                $user->email,
+                $request->input('password'),
+                $dashboardUrl
+            ));
 
             DB::commit();
             Cache::forget('admin_dashboard_data');
@@ -143,7 +148,6 @@ class AuthServices
             return response()->json([
                 'success' => false,
                 'message' => 'Registration failed.',
-                'error'   => str_contains($e->getMessage(), 'https://web3.blockmaster.info/api/create-address') === true ? "Wallet Create Failed Server Busy Please Try again" : $e->getMessage(),
             ], 500);
         }
     }
