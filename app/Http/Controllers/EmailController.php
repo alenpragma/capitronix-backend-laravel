@@ -44,18 +44,4 @@ class EmailController extends Controller
         return view('mail.Emailverifiedsuccessfull');
     }
 
-    public function welcomeEmail(Request $request)
-    {
-        $user = $request->user();
-
-        if (!$user) {
-            return response()->json(['message' => 'User not authenticated'], 401);
-        }
-
-        $dashboardUrl = url('www.capitronix.com/dashboard');
-
-        $user->notify(new WelcomeEmail($user->name));
-
-        return response()->json(['message' => 'Welcome email sent!']);
-    }
 }
