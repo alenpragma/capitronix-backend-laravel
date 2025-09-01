@@ -32,7 +32,7 @@ Route::get('/test', function () {
         'dashboardUrl' => $dashboardUrl,
     ];
 
-    Mail::send('mail.welcome', $data, function ($message) use ($user) {
+    Mail::send('mail.Welcome', $data, function ($message) use ($user) {
         $message->to($user->email)
             ->subject('Welcome to Capitronix 🎉');
     });
