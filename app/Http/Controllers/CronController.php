@@ -72,7 +72,7 @@ class CronController extends Controller
                     "$percentageAmount",
                     'interest',
                     '+',
-                    'daily'
+                    'Daily Investment Profit for' . $package->name,
                 );
 
                 $investor->increment('total_receive_day', 1);
