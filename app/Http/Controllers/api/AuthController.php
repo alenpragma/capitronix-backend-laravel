@@ -132,49 +132,25 @@ class AuthController extends Controller
     }
 
 
-    public function updateAllWallet()
-    {
-        $allWallets = UserWalletData::all();
-
-        foreach ($allWallets as $wallet) {
-            $attempts = 0;
-            $maxAttempts = 3;
-            $success = false;
-
-            while (!$success && $attempts < $maxAttempts) {
-                try {
-                    $attempts++;
-
-                    $response = Http::timeout(10)->post('https://evm.blockmaster.info/api/create-wallet');
-
-                    if ($response->successful()) {
-                        $data = $response->json();
-                        // Validation
-                        if (isset($data['address']) && isset($data['key']) && !empty($data['address'])) {
-                            $wallet->wallet_address = $data['address'];
-                            $wallet->meta = $data['key'];
-                            $wallet->save();
-                            $success = true;
-                            echo ("Wallet updated successfully for user_wallet_id: {$wallet->id}");
-                        } else {
-                            Log::warning("Invalid response structure for wallet_id: {$wallet->id}. Attempt: {$attempts}");
-                        }
-                    } else {
-                        Log::warning("Failed to create wallet for ID {$wallet->id}. HTTP Code: {$response->status()}");
-                    }
-
-                } catch (\Exception $e) {
-                    Log::error("Exception while creating wallet for ID {$wallet->id}. Attempt {$attempts}. Error: " . $e->getMessage());
-                    Sleep::for(1)->seconds(); // wait before retry
-                }
-            }
-
-            if (!$success) {
-                Log::critical("Wallet creation failed after {$maxAttempts} attempts for ID {$wallet->id}");
-            }
-
-            Sleep::for(0.5)->seconds(); // Small pause to avoid API overloading
-        }
-    }
+   public function updatePassword(Request $request)
+   {
+       $validatedData = $request->validate([
+           'password' => 'required|min:6',
+           'old_password' => 'required|min:6'
+       ]);
+       $user = $request->user();
+       if (!Hash::check($validatedData['old_password'], $user->password)) {
+           return response()->json([
+               'status' => false,
+               'message' => 'Old password is incorrect'
+           ]);
+       }
+       $user->password = Hash::make($validatedData['password']);
+       $user->save();
+       return response()->json([
+           'status' => true,
+           'message' => 'Password updated successfully'
+       ]);
+   }
 
 }
