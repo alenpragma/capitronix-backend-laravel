@@ -78,6 +78,7 @@ class UserController extends Controller
                 'created_at' => $referral->created_at,
                 'investment' => Investor::where('user_id', $referral->id)->sum('investment'),
                 'team' => $this->getTeamRecursive($referral, $level + 1),
+                'teamInvest' => $referral->totalTeamInvestment(),
                 'total_earned' => Transactions::where('user_id', $referral->id)->whereIn('remark', ['referral_commission', 'interest','generation_income'])->sum('amount'),
             ];
         }
