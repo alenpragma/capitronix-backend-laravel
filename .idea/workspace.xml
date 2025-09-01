@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ef846f03-2d52-422d-a247-eb7810106294" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Service/AuthServices.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Service/AuthServices.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CronController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CronController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +187,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "emon",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/imamhosen/PhpstormProjects/capitronix-backend-laravel",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

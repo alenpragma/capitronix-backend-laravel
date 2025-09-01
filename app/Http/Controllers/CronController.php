@@ -86,7 +86,9 @@ class CronController extends Controller
                 ]);
             }
         });
-
+        DB::table('daily_cron_time')->update([
+            'next_cron_time' => Carbon::now(),
+        ]);
         return $holiday ? 'Holiday Found: Only next_cron Updated' : 'Cron Job Executed Successfully';
     }
 
