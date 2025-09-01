@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Notifications\WelcomeEmail;
+use Illuminate\Auth\Notifications\VerifyEmail;
 
 class EmailController extends Controller
 {
@@ -41,5 +42,20 @@ class EmailController extends Controller
         $user->markEmailAsVerified();
 
         return view('mail.Emailverifiedsuccessfull');
+    }
+
+    public function welcomeEmail(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+
+        $dashboardUrl = url('www.capitronix.com/dashboard');
+
+        $user->notify(new WelcomeEmail($user->name, $dashboardUrl));
+
+        return response()->json(['message' => 'Welcome email sent!']);
     }
 }

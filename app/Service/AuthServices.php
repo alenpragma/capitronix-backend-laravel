@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\WelcomeEmail;
 
 class AuthServices
 {
@@ -122,7 +123,10 @@ class AuthServices
             ]);
 
             // Send verification notification
-            $user->notify(new VerifyEmail());
+            // $user->notify(new VerifyEmail());
+
+            $dashboardUrl = url('https://www.capitronix.com/dashboard');
+            $user->notify(new WelcomeEmail($user->name, $dashboardUrl));
 
             DB::commit();
             Cache::forget('admin_dashboard_data');
