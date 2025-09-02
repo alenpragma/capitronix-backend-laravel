@@ -35,10 +35,11 @@ class UserController extends Controller
         $team = $this->getTeamRecursive($user);
         return response()->json([
             'status' => true,
-            'user' => $user->only(['email', 'name', 'is_active', 'created_at']),
+            'user' => $user->only(['email', 'name', 'image', 'is_active', 'created_at']),
             'my_earnings' => Transactions::where('user_id', $user->id)->whereIn('remark', ['referral_commission', 'interest','generation_income'])->sum('amount'),
             'team' => $team,
-            'my_team_invest' => $user->totalTeamInvestment()
+            'my_team_invest' => $user->totalTeamInvestment(),
+            'my_image' => $user->image,
         ]);
     }
 
