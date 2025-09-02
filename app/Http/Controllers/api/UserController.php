@@ -39,7 +39,6 @@ class UserController extends Controller
             'my_earnings' => Transactions::where('user_id', $user->id)->whereIn('remark', ['referral_commission', 'interest','generation_income'])->sum('amount'),
             'team' => $team,
             'my_team_invest' => $user->totalTeamInvestment(),
-            'my_image' => $user->image,
         ]);
     }
 
@@ -73,6 +72,7 @@ class UserController extends Controller
         $team = [];
         foreach ($user->referrals as $referral) {
             $team[] = [
+                'image' => $referral->image,
                 'level' => $level,
                 'email' => $referral->email,
                 'name' => $referral->name,
