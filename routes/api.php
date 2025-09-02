@@ -54,7 +54,7 @@ Route::prefix('user')->middleware(['throttle:3,1'])->group(function () {
 //cron
 Route::post('forget-password-send-mail',[AuthController::class, 'ForgotPasswordSendEmail']);
 Route::post('reset-password',[AuthController::class, 'ResetPassword']);
-Route::get('cron',[CronController::class, 'cronJob']);
+Route::get('cron/daily-interest',[CronController::class, 'cronJob']);
 Route::get('trx-cron',[CronController::class, 'paymentCheck']);
 Route::post('deposit-check', [DepositController::class, 'webHook']);
 
