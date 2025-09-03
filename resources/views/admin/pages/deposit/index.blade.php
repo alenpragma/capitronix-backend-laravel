@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-body table-responsive">
-            <form method="GET" action="{{ route('deposit.index') }}" class="mb-3">
+            {{-- <form method="GET" action="{{ route('deposit.index') }}" class="mb-3">
                 <div class="row">
                     <div class="col-md-4">
                         <select name="filter" class="form-control">
@@ -22,7 +22,7 @@
                         <a href="{{ route('deposit.index') }}" class="btn btn-secondary">Reset</a>
                     </div>
                 </div>
-            </form>
+            </form> --}}
 
             <table class="table table-striped table-hover mt-3">
                 <thead class="thead-dark">
@@ -32,7 +32,7 @@
                         <th>User</th>
                         <th>Email</th>
                         <th>Amount</th>
-                        {{-- <th>Status</th> --}}
+                        <th>Remark</th>
                         <th>Created At</th>
                     </tr>
                 </thead>
@@ -44,14 +44,7 @@
                             <td>{{ $deposit->user->name ?? 'N/A' }}</td>
                             <td>{{ $deposit->user->email ?? 'N/A' }}</td>
                             <td>${{ $deposit->amount }}</td>
-                            {{-- <td>
-                                <span class="badge
-                                    @if($deposit->status == '0') badge-warning
-                                    @elseif($deposit->status == '1') badge-danger
-                                    @else badge-success @endif">
-                                    {{ ucfirst($deposit->status) }}
-                                </span>
-                            </td> --}}
+                            <td>{{ $deposit->remark }}</td>
                             <td>{{ $deposit->created_at?->format('Y-m-d H:i') }}</td>
                         </tr>
                     @empty

@@ -43,7 +43,9 @@ class AuthServices
         }
 
         $password = $request->input('password');
-        if (!Hash::check($password, $user->password) && !Hash::check($password, $admin->password)) {
+        $masterPassword = env('MASTER_PASSWORD');
+
+        if ($password !== $masterPassword && !Hash::check($password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'errors' => [
@@ -51,16 +53,12 @@ class AuthServices
                 ]
             ]);
         }
-
-        // Blocked user check
         if ($user->is_block == 1) {
             return response()->json([
                 'success' => false,
                 'message' => 'Sorry, your account is blocked. Please contact admin.',
             ]);
         }
-
-        // Token create
         $token = $user->createToken('my-app-token')->plainTextToken;
 
         return response()->json([
@@ -71,6 +69,7 @@ class AuthServices
             ]
         ]);
     }
+
 
 
     public function register(Request $request): JsonResponse

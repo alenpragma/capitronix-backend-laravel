@@ -22,7 +22,7 @@ class AdminDashboardController extends Controller
 
             $withdrawSettings = withdraw_settings::first();
             $chargePercent = $withdrawSettings ? $withdrawSettings->charge : 0;
-            $totalNetWithdrawals = Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->sum('amount');
+            $totalNetWithdrawals = Transactions::where('remark', 'withdrawal')->where('status', 'Completed')->sum('amount');
             $withdrawChargeAmount = $chargePercent > 0 ? $totalNetWithdrawals * $chargePercent / (100 - $chargePercent) : 0;
 
               $costPerCode = 25;
@@ -67,9 +67,13 @@ class AdminDashboardController extends Controller
                 // 'last30DaysDeposits' => Deposit::whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
 
                 // withdrawal
-                'totalWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->sum('amount'),
-                'todayWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->whereDate('created_at', today())->sum('amount'),
-                'last30DaysWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Paid')->whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
+                'totalWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Completed')->sum('amount'),
+                'todayWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Completed')->whereDate('created_at', today())->sum('amount'),
+                'last30DaysWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Completed')->whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
+
+                //  'totalWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'Completed')->sum('amount'),
+                'pendingWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'pending')->count(),
+                'rejectedWithdrawals' => Transactions::where('remark', 'withdrawal')->where('status', 'rejected')->count(),
                'withdrawChargeAmount' => $withdrawChargeAmount,
 
 

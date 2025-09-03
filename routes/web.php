@@ -1,19 +1,20 @@
 <?php
 
-use App\Http\Controllers\admin\AdminDashboardController;
-use App\Http\Controllers\admin\CodesController;
-use App\Http\Controllers\admin\DepositController;
-use App\Http\Controllers\admin\GeneralSettingsController;
-use App\Http\Controllers\admin\KycController;
-use App\Http\Controllers\admin\PlansController;
-use App\Http\Controllers\admin\ReferralsSettingsController;
-use App\Http\Controllers\admin\TransactionsController;
-use App\Http\Controllers\admin\UsersController;
-use App\Http\Controllers\admin\WithdrawController;
-use App\Http\Controllers\admin\WithdrawSettingsController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HolidayController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\KycController;
+use App\Http\Controllers\admin\CodesController;
+use App\Http\Controllers\admin\PlansController;
+use App\Http\Controllers\admin\UsersController;
+use App\Http\Controllers\admin\DepositController;
+use App\Http\Controllers\admin\WithdrawController;
+use App\Http\Controllers\admin\TransactionsController;
+use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\admin\GeneralSettingsController;
+use App\Http\Controllers\admin\LevelCommissionController;
+use App\Http\Controllers\admin\WithdrawSettingsController;
+use App\Http\Controllers\admin\ReferralsSettingsController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -81,6 +82,12 @@ Route::post('users/toggle-block/{user}', [UsersController::class,'toggleBlock'])
     Route::post('general-settings', [GeneralSettingsController::class, 'update'])->name('admin.general.settings.update');
 
     Route::get('codes', [CodesController::class, 'index'])->name('codes.index');
+
+    // level commission 
+        Route::get('/level-commissions', [LevelCommissionController::class, 'index'])
+        ->name('admin.level_commissions.index');
+    Route::post('/level-commissions/update', [LevelCommissionController::class, 'update'])
+        ->name('admin.level_commissions.update');
 
 });
 

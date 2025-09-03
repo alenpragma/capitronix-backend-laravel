@@ -79,14 +79,20 @@
                 </li>
 
                 <!-- deposit -->
-                <li class="nav-item {{ Str::contains(request()->path(), 'deposit') ? 'active' : '' }}">
-                    <a href="/deposit" class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-money-check-alt"></i>
-                            <p class="m-0">Auto Deposit</p>
-                        </div>
+                <li class="nav-item nav-item {{ Str::contains(request()->path(), 'deposit') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#deposit">
+                        <i class="fas fa-money-check-alt"></i>
+                        <p>Deposit</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse" id="deposit">
+                        <ul class="nav nav-collapse">
+                            <li><a href="/deposit?remark=auto"><span class="sub-item {{ Str::contains(request()->path(), 'deposit') ? 'active' : '' }}">Auto Deposit</span></a></li>
+                            <li><a href="/deposit?remark=manual"><span class="sub-item">Manual Deposit</span></a></li>
+                        </ul>
+                    </div>
                 </li>
+
 
 
                 <!-- Transactions -->

@@ -98,7 +98,8 @@ return [
             'throttle' => 60,
         ],
     ],
-
+    
+    'master_password' => env('MASTER_PASSWORD', null),
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout

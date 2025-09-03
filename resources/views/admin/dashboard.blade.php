@@ -3,6 +3,19 @@
 @section('content')
     <div class="container mt-4">
 
+        {{-- Pending Withdrawals Alert --}}
+        @if($dashboardData['pendingWithdrawals'] > 0)
+            <a href="/withdraw?filter=pending" class="text-decoration-none">
+                <div class="alert alert-warning d-flex align-items-center shadow-sm rounded p-3 mb-4">
+                    <i class="fas fa-exclamation-triangle text-dark fs-4 me-3"></i>
+                    <div class="fw-semibold text-dark">
+                        You currently have {{ $dashboardData['pendingWithdrawals'] }} pending withdrawal {{ $dashboardData['pendingWithdrawals'] > 1 ? 'requests' : 'request' }}.
+                    </div>
+                </div>
+            </a>
+        @endif
+
+
         {{-- Country-wise Users Pie Chart --}}
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-body">
