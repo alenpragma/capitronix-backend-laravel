@@ -13,12 +13,13 @@ class UsersController extends Controller
 {
     public function index(Request $request)
     {
+        
         $filter = $request->filter;
+         $search = $request->search;
         $page = $request->get('page', 1);
-        $cacheKey = "users_{$filter}_page_{$page}";
+         $cacheKey = "users_{$filter}_{$search}_page_{$page}";
 
-        $users = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($filter) {
-            $query = User::query()->where('role', 'user');
+    $users = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($filter, $search) {$query = User::query()->where('role', 'user')->withSum('investors', 'investment'); 
 
             switch ($filter) {
                 case 'active':
@@ -33,6 +34,9 @@ class UsersController extends Controller
                 case 'unblocked':
                     $query->where('is_block', 0);
                     break;
+            }
+            if (!empty($search)) {
+                $query->where('email', 'like', '%' . $search . '%');
             }
 
             return $query->orderBy('id', 'desc')->paginate(15);

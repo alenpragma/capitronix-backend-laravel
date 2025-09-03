@@ -20,7 +20,9 @@ class DepositController extends Controller
     if ($request->has('filter') && $request->filter) {
         $query->where('status', $request->filter);
     }
-
+    if ($request->has('remark') && $request->remark) {
+        $query->where('remark', $request->remark);
+    }
     $deposits = $query->paginate(10);
         return view('admin.pages.deposit.index', compact('deposits'));
     }

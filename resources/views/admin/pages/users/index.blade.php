@@ -30,7 +30,7 @@
             <h4 class="card-title mb-0">All Users</h4>
         </div>
 
-        <div class="card-body table-responsive">
+        <div class="card-body">
             <form method="GET" action="{{ route('admin.users.index') }}" class="mb-3">
                 <div class="row">
                     <div class="col-md-4">
@@ -50,76 +50,92 @@
                 </div>
             </form>
 
-            <table class="table table-striped table-hover table-head-bg-primary mt-3">
-                <thead class="thead-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Country</th>
-                    <th>Wallet Balance</th>
-                    <th>Profit Wallet</th>
-                    <th>Active Wallet</th>
-                    <th>Referred By</th>
-                    <th>Status</th>
-                    <th>Block Status</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @forelse ($users as $index => $user)
+
+            <div class="d-flex justify-content-end mb-3">
+                <form method="GET" action="{{ route('admin.users.index') }}" class="d-flex">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Search by email" value="{{ request('search') }}">
+                    <input type="hidden" name="filter" value="{{ request('filter') }}">
+                    <button type="submit" class="btn btn-primary me-2">Search</button>
+                    @if(request('search'))
+                        <a href="{{ route('admin.users.index', ['filter' => request('filter')]) }}" class="btn btn-secondary">Reset</a>
+                    @endif
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-head-bg-primary mt-3">
+                    <thead class="thead-dark">
                     <tr>
-                        <td>{{ $index + $users->firstItem() }}</td>
-                        <td>{{ $user->created_at->format('Y-m-d H:i') }}</td>
-                        <td>
-                            <a class="text-decoration-none text-dark" href="{{ route('admin.users.show', $user->id) }}">
-                            {{ $user->name }}
-                            </a>
-                            
-                        </td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->country }}</td>
-                        <td>${{ number_format($user->deposit_wallet ?? 0, 2) }}</td>
-                        <td>${{ number_format($user->profit_wallet ?? 0, 2) }}</td>
-                        <td>${{ number_format($user->active_wallet ?? 0, 2) }}</td>
-                        <td>{{ $user->referredBy->name ?? 'N/A' }}</td>
-                        <td>
-                            <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }}">
-                                {{ $user->is_active ? 'Active' : 'Inactive' }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge {{ $user->is_block ? 'bg-danger' : 'bg-success' }}">
-                                {{ $user->is_block ? 'Blocked' : 'Unblocked' }}
-                            </span>
-                        </td>
-                        <td>
-                            {{-- <button type="button"
-                                    class="btn btn-sm btn-primary updateStatusBtn"
-                                    data-id="{{ $user->id }}"
-                                    data-name="{{ $user->name }}"
-                                    data-email="{{ $user->email }}"
-                                    data-active-wallet="{{ $user->active_wallet }}"
-                                    data-deposit-wallet="{{ $user->deposit_wallet }}"
-                                    data-block="{{ $user->is_block }}"
-                                    data-wallet="{{ $user->profit_wallet }}"
-                                    data-toggle="modal"
-                                    data-target="#actionModal">
-                                <i class="fas fa-edit"></i> Manage
-                            </button> --}}
-                            <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-primary" title="View">
-                               View
-                            </a>
-                        </td>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Country</th>
+                        <th>Wallet Balance</th>
+                        <th>Profit Wallet</th>
+                        <th>Active Wallet</th>
+                        <th>Total Investment</th>
+                        <th>Referred By</th>
+                        <th>Status</th>
+                        <th>Block Status</th>
+                        <th>Action</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="10" class="text-center">No users found.</td>
-                    </tr>
-                @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    @forelse ($users as $index => $user)
+                        <tr>
+                            <td>{{ $index + $users->firstItem() }}</td>
+                            <td>{{ $user->created_at->format('Y-m-d H:i') }}</td>
+                            <td>
+                                <a class="text-decoration-none text-dark" href="{{ route('admin.users.show', $user->id) }}">
+                                {{ $user->name }}
+                                </a>
+                                
+                            </td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->country }}</td>
+                            <td>${{ number_format($user->deposit_wallet ?? 0, 2) }}</td>
+                            <td>${{ number_format($user->profit_wallet ?? 0, 2) }}</td>
+                            <td>${{ number_format($user->active_wallet ?? 0, 2) }}</td>
+                            <td>${{ number_format($user->investors_sum_investment ?? 0, 2) }}</td>
+                            <td>{{ $user->referredBy->name ?? 'N/A' }}</td>
+                            <td>
+                                <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $user->is_active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {{ $user->is_block ? 'bg-danger' : 'bg-success' }}">
+                                    {{ $user->is_block ? 'Blocked' : 'Unblocked' }}
+                                </span>
+                            </td>
+                            <td>
+                                {{-- <button type="button"
+                                        class="btn btn-sm btn-primary updateStatusBtn"
+                                        data-id="{{ $user->id }}"
+                                        data-name="{{ $user->name }}"
+                                        data-email="{{ $user->email }}"
+                                        data-active-wallet="{{ $user->active_wallet }}"
+                                        data-deposit-wallet="{{ $user->deposit_wallet }}"
+                                        data-block="{{ $user->is_block }}"
+                                        data-wallet="{{ $user->profit_wallet }}"
+                                        data-toggle="modal"
+                                        data-target="#actionModal">
+                                    <i class="fas fa-edit"></i> Manage
+                                </button> --}}
+                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-primary" title="View">
+                                View
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="10" class="text-center">No users found.</td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+
 
             <div class="mt-3">
                 {{ $users->links('admin.layouts.partials.__pagination') }}
