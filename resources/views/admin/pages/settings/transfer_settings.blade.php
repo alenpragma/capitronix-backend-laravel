@@ -31,7 +31,7 @@
             @enderror
         </div>
 
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label class="form-label fw-bold">Transfer Charge (%)</label>
             <input type="number" step="0.01" name="charge"
                 value="{{ old('charge', $setting->charge ?? '') }}"
@@ -39,7 +39,7 @@
             @error('charge')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
-        </div>
+        </div> --}}
 
         <div class="mb-3">
             <label class="form-label fw-bold">Status</label>
