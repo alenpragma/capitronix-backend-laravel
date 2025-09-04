@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ef846f03-2d52-422d-a247-eb7810106294" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CronController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CronController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,9 +212,6 @@
       <option name="pestRunnerSettings">
         <PestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
       </option>
-      <option name="runnerSettings">
-        <PhpTestRunnerSettings configuration_file="$PROJECT_DIR$/phpunit.xml" scope="ConfigurationFile" use_alternative_configuration_file="true" />
-      </option>
       <method v="2" />
     </configuration>
   </component>
@@ -247,6 +245,7 @@
       <workItem from="1756634231397" duration="9874000" />
       <workItem from="1756717951865" duration="2959000" />
       <workItem from="1756804868519" duration="1274000" />
+      <workItem from="1756812842765" duration="3445000" />
     </task>
     <servers />
   </component>
