@@ -9,6 +9,7 @@ use App\Models\withdraw_settings;
 use App\Service\TransactionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransferSetting;
 
 class TransactionsController extends Controller
 {
@@ -49,7 +50,7 @@ class TransactionsController extends Controller
     public function transfer(Request $request)
     {
         $validated = $request->validate([
-            'amount' => 'required|numeric|min:10',
+            'amount' => 'required|numeric',
             'wallet' => 'required|string|in:active,deposit',
             'email'  => 'required|exists:users,email',
         ]);
@@ -69,6 +70,28 @@ class TransactionsController extends Controller
             'deposit' => 'deposit_wallet',
         ];
         $walletColumn = $walletMap[$validated['wallet']];
+
+         $setting = TransferSetting::first();
+
+        if (!$setting || $setting->status == 0) {
+            return response()->json([
+                'status'  => false,
+                'message' => "Transfer is currently disabled by admin",
+            ], 403);
+        }
+        if ($validated['amount'] < $setting->min_transfer) {
+            return response()->json([
+                'status'  => false,
+                'message' => "Minimum transfer amount is {$setting->min_transfer}",
+            ], 400);
+        }
+
+        if ($validated['amount'] > $setting->max_transfer) {
+            return response()->json([
+                'status'  => false,
+                'message' => "Maximum transfer amount is {$setting->max_transfer}",
+            ], 400);
+        }
 
         try {
             DB::beginTransaction();
