@@ -76,7 +76,7 @@ class TransactionsController extends Controller
         if (!$setting || $setting->status == 0) {
             return response()->json([
                 'status'  => false,
-                'message' => "Transfer is currently disabled by admin",
+                'message' => "Transfer is currently disabled by Admin",
             ], 403);
         }
         if ($validated['amount'] < $setting->min_transfer) {
