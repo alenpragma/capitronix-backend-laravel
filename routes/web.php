@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\TransactionsController;
 use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\admin\GeneralSettingsController;
 use App\Http\Controllers\admin\LevelCommissionController;
+use App\Http\Controllers\admin\TransferSettingController;
 use App\Http\Controllers\admin\WithdrawSettingsController;
 use App\Http\Controllers\admin\ReferralsSettingsController;
 
@@ -84,10 +85,16 @@ Route::post('users/toggle-block/{user}', [UsersController::class,'toggleBlock'])
     Route::get('codes', [CodesController::class, 'index'])->name('codes.index');
 
     // level commission 
-        Route::get('/level-commissions', [LevelCommissionController::class, 'index'])
+    Route::get('/level-commissions', [LevelCommissionController::class, 'index'])
         ->name('admin.level_commissions.index');
     Route::post('/level-commissions/update', [LevelCommissionController::class, 'update'])
         ->name('admin.level_commissions.update');
+
+        //transfer settings
+    Route::get('/transfer-settings', [TransferSettingController::class, 'index'])
+        ->name('admin.transfer.settings');
+    Route::post('/transfer-settings/update', [TransferSettingController::class, 'update'])
+        ->name('admin.transfer.settings.update');
 
 });
 

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Deposit;
-use App\Models\Transactions;
-use App\Models\withdraw_settings;
 use App\Models\Code;
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
+use App\Models\Deposit;
+use App\Models\Investor;
 use Illuminate\View\View;
+use App\Models\Transactions;
+use App\Models\withdraw_settings;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class AdminDashboardController extends Controller
 {
@@ -84,6 +85,12 @@ class AdminDashboardController extends Controller
                 'usedCodes'        => $usedCodes,
                 'unusedCodes'      => $unusedCodes,
                 'totalPurchased'   => $totalPurchased,
+
+                // Investment
+                'totalInvestmentAmount' =>Investor::sum('investment'),
+                'runningInvestmentAmount' => Investor::where('status', 1)->sum('investment'),
+                'canceledInvestmentAmount' => Investor::where('status', 0)->sum('investment'),
+                'expiredInvestmentAmount' => Investor::where('total_due_day', 0)->sum('investment'),
 
             ];
         });
