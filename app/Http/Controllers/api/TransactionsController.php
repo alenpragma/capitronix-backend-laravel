@@ -292,5 +292,4 @@ class TransactionsController extends Controller
     }
 
 
-
 }

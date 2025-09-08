@@ -96,6 +96,8 @@ Route::post('users/toggle-block/{user}', [UsersController::class,'toggleBlock'])
     Route::post('/transfer-settings/update', [TransferSettingController::class, 'update'])
         ->name('admin.transfer.settings.update');
 
+    Route::get('/investments', [UsersController::class, 'investmentHistory'])->name('admin.investments');
+
 });
 
 require __DIR__.'/auth.php';
