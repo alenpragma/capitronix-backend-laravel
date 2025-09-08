@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Deposit;
 use App\Models\User;
+use App\Models\Deposit;
+use App\Models\Investor;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 
 class UsersController extends Controller
@@ -155,4 +156,28 @@ class UsersController extends Controller
         return redirect()->back()->with('success',$user->is_block ? 'User Blocked' : 'User Unblocked');
     }
 
+
+    public function investmentHistory(Request $request)
+    {
+        $query = Investor::with('user');
+
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->has('from_date') && $request->has('to_date') && !empty($request->from_date) && !empty($request->to_date)) {
+            $query->whereBetween('created_at', [
+                $request->from_date . " 00:00:00",
+                $request->to_date . " 23:59:59"
+            ]);
+        }
+
+        $investors = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        return view('admin.pages.investment_history', compact('investors'));
+    }
 }
