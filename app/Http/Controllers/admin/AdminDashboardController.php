@@ -44,12 +44,12 @@ class AdminDashboardController extends Controller
 
 
                 //deposit wallet
-                'totalDeposits' => Deposit::where('wallet_type', 'deposit')->sum('amount'),
+                'totalDeposits' => Deposit::where('wallet_type', 'deposit')->where('status', 1)->sum('amount'),
                 'todayDeposits' => Deposit::where('wallet_type', 'deposit')->whereDate('created_at', today())->sum('amount'),
-                'autoDeposits' => Deposit::where('wallet_type', 'deposit')->where('remark', 'auto')->sum('amount'),
-                'manualDeposits' => Deposit::where('wallet_type', 'deposit')->where('remark', 'manual')->sum('amount'),
-                'last7DaysDeposits' => Deposit::where('wallet_type', 'deposit')->whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])->sum('amount'),
-                'last30DaysDeposits' => Deposit::where('wallet_type', 'deposit')->whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
+                'autoDeposits' => Deposit::where('wallet_type', 'deposit')->where('remark', 'auto')->where('status', 1)->sum('amount'),
+                'manualDeposits' => Deposit::where('wallet_type', 'deposit')->where('remark', 'manual')->where('status', 1)->sum('amount'),
+                'last7DaysDeposits' => Deposit::where('wallet_type', 'deposit')->where('status', 1)->whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])->sum('amount'),
+                'last30DaysDeposits' => Deposit::where('wallet_type', 'deposit')->where('status', 1)->whereBetween('created_at', [now()->subDays(30), today()])->sum('amount'),
 
 
                 //active wallet

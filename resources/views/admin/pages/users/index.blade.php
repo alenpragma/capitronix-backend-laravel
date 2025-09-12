@@ -74,6 +74,7 @@
                         <th>Profit Wallet</th>
                         <th>Active Wallet</th>
                         <th>Total Investment</th>
+                        <th>Total Earning</th>
                         <th>Referred By</th>
                         <th>Status</th>
                         <th>Block Status</th>
@@ -97,6 +98,7 @@
                             <td>${{ number_format($user->profit_wallet ?? 0, 2) }}</td>
                             <td>${{ number_format($user->active_wallet ?? 0, 2) }}</td>
                             <td>${{ number_format($user->investors_sum_investment ?? 0, 2) }}</td>
+                            <td>{{ number_format($user->total_earning ?? 0, 2) }}</td>
                             <td>{{ $user->referredBy->name ?? 'N/A' }}</td>
                             <td>
                                 <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }}">

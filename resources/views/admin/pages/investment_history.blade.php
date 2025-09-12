@@ -35,6 +35,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
+                        <th>Date</th>
                         <th>User</th>
                         <th>Email</th>
                         <th>Package</th>
@@ -49,6 +50,8 @@
                     @forelse($investors as $key => $inv)
                         <tr>
                             <td>{{ $investors->firstItem() + $key }}</td>
+
+                            <td>{{ $inv->created_at->format('d-m-y') }}</td>
                             <td>{{ $inv->user->name ?? 'N/A' }}</td>
                             <td>{{ $inv->user->email ?? 'N/A' }}</td>
                             <td>{{ $inv->package_name ?? 'N/A' }}</td>
