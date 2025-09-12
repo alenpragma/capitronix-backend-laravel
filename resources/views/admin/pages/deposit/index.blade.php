@@ -24,36 +24,38 @@
                 </div>
             </form> --}}
 
-            <table class="table table-striped table-hover mt-3">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>TrxID:</th>
-                        <th>User</th>
-                        <th>Email</th>
-                        <th>Amount</th>
-                        <th>Remark</th>
-                        <th>Created At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($deposits as $index => $deposit)
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mt-3">
+                    <thead class="thead-dark">
                         <tr>
-                            <td>{{ $index + $deposits->firstItem() }}</td>
-                            <td>{{ $deposit->transaction_id }}</td>
-                            <td>{{ $deposit->user->name ?? 'N/A' }}</td>
-                            <td>{{ $deposit->user->email ?? 'N/A' }}</td>
-                            <td>${{ $deposit->amount }}</td>
-                            <td>{{ $deposit->remark }}</td>
-                            <td>{{ $deposit->created_at?->format('Y-m-d H:i') }}</td>
+                            <th>#</th>
+                            <th>TrxID:</th>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Amount</th>
+                            <th>Remark</th>
+                            <th>Created At</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">No Deposits found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($deposits as $index => $deposit)
+                            <tr>
+                                <td>{{ $index + $deposits->firstItem() }}</td>
+                                <td>{{ $deposit->transaction_id }}</td>
+                                <td>{{ $deposit->user->name ?? 'N/A' }}</td>
+                                <td>{{ $deposit->user->email ?? 'N/A' }}</td>
+                                <td>${{ $deposit->amount }}</td>
+                                <td>{{ $deposit->remark }}</td>
+                                <td>{{ $deposit->created_at?->format('Y-m-d H:i') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">No Deposits found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
             <div class="mt-3">
                 {{ $deposits->appends(request()->query())->links('admin.layouts.partials.__pagination') }}
