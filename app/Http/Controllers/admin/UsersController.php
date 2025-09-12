@@ -20,7 +20,7 @@ class UsersController extends Controller
         $page = $request->get('page', 1);
          $cacheKey = "users_{$filter}_{$search}_page_{$page}";
 
-    $users = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($filter, $search) {$query = User::query()->where('role', 'user')->withSum('investors', 'investment'); 
+    $users = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($filter, $search) {$query = User::query()->where('role', 'user')->withSum('investors', 'investment')    ->withSum(['transactions as total_earning' => function ($q) {$q->whereIn('remark', ['referral_commission', 'interest', 'generation_income']);}], 'amount');
 
             switch ($filter) {
                 case 'active':

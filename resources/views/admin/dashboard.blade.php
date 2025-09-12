@@ -69,72 +69,187 @@
             <div class="card-body">
                 <h5 class="card-title fw-bold mb-4">Deposit Wallet Report</h5>
                 <div class="row g-4">
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['totalDeposits'], 2) }}" label="Total Deposits" bg="success" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['todayDeposits'], 2) }}" label="Today Deposits" bg="warning" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['autoDeposits'], 2) }}" label="Total Auto Deposits" bg="warning" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['manualDeposits'], 2) }}" label="Total Manual Deposits" bg="warning" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last7DaysDeposits'], 2) }}" label="Last 7 Days Deposits" bg="info" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last30DaysDeposits'], 2) }}" label="Last 30 days Deposits" bg="secondary" />
+                    @php
+                        $deposits = [
+                            ['label' => 'Total Deposits', 'value' => number_format($dashboardData['totalDeposits'], 2), 'icon' => 'fas fa-hand-holding-usd', 'bg' => 'bg-success'],
+                            ['label' => 'Today Deposits', 'value' => number_format($dashboardData['todayDeposits'], 2), 'icon' => 'fas fa-hand-holding-usd', 'bg' => 'bg-warning'],
+                            ['label' => 'Total Auto Deposits', 'value' => number_format($dashboardData['autoDeposits'], 2), 'icon' => 'fas fa-robot', 'bg' => 'bg-secondary'],
+                            ['label' => 'Total Manual Deposits', 'value' => number_format($dashboardData['manualDeposits'], 2), 'icon' => 'fas fa-hand-paper', 'bg' => 'bg-primary'],
+                            ['label' => 'Last 7 Days Deposits', 'value' => number_format($dashboardData['last7DaysDeposits'], 2), 'icon' => 'fas fa-hand-holding-usd', 'bg' => 'bg-info'],
+                            ['label' => 'Last 30 Days Deposits', 'value' => number_format($dashboardData['last30DaysDeposits'], 2), 'icon' => 'fas fa-calendar-alt', 'bg' => 'bg-secondary'],
+                        ];
+                    @endphp
+
+                    @foreach ($deposits as $deposit)
+                        <div class="col-md-6">
+                            <a href="{{ route('deposit.index') }}" class="text-decoration-none text-black">
+                                <div class="d-flex justify-content-between align-items-center border rounded p-3 h-100 bg-light hover-shadow">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box {{ $deposit['bg'] }} bg-opacity-75 text-white rounded d-flex justify-content-center align-items-center me-3" style="width: 48px; height: 48px;">
+                                            <i class="{{ $deposit['icon'] }}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold fs-5">${{ $deposit['value'] }}</div>
+                                            <small class="text-muted">{{ $deposit['label'] }}</small>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-muted"></i>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
 
-                {{-- Active Wallet Section --}}
+
+        {{-- Active Wallet Section --}}
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-body">
                 <h5 class="card-title fw-bold mb-4">Active Wallet Report</h5>
                 <div class="row g-4">
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['totalActiveDeposits'], 2) }}" label="Total Active Wallet" bg="success" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['todayActiveDeposits'], 2) }}" label="Today Active Wallet" bg="warning" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['autoActiveDeposits'], 2) }}" label="Total Auto Active Deposit" bg="primary" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['manualActiveDeposits'], 2) }}" label="Total Manual Active Deposit" bg="secondary" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last7DaysActiveDeposits'], 2) }}" label="Last 7 Days Active Wallet" bg="info" />
-                    <x-dashboard.stat-card icon="fas fa-hand-holding-usd" value="${{ number_format($dashboardData['last30DaysActiveDeposits'], 2) }}" label="Last 30 days Active Wallet" bg="danger" />
+                    @php
+                        $activeWallets = [
+                            ['label' => 'Total Active Wallet', 'value' => number_format($dashboardData['totalActiveDeposits'], 2), 'icon' => 'fas fa-hand-holding-usd', 'bg' => 'bg-success'],
+                            ['label' => 'Today Active Wallet', 'value' => number_format($dashboardData['todayActiveDeposits'], 2), 'icon' => 'fas fa-hand-holding-usd', 'bg' => 'bg-warning'],
+                            ['label' => 'Total Auto Active Deposit', 'value' => number_format($dashboardData['autoActiveDeposits'], 2), 'icon' => 'fas fa-robot', 'bg' => 'bg-primary'],
+                            ['label' => 'Total Manual Active Deposit', 'value' => number_format($dashboardData['manualActiveDeposits'], 2), 'icon' => 'fas fa-hand-paper', 'bg' => 'bg-secondary'],
+                            ['label' => 'Last 7 Days Active Wallet', 'value' => number_format($dashboardData['last7DaysActiveDeposits'], 2), 'icon' => 'fas fa-hand-holding-usd', 'bg' => 'bg-info'],
+                            ['label' => 'Last 30 Days Active Wallet', 'value' => number_format($dashboardData['last30DaysActiveDeposits'], 2), 'icon' => 'fas fa-calendar-alt', 'bg' => 'bg-danger'],
+                        ];
+                    @endphp
+
+                    @foreach ($activeWallets as $wallet)
+                        <div class="col-md-6">
+                            <a href="{{ route('deposit.index') }}" class="text-decoration-none text-black">
+                                <div class="d-flex justify-content-between align-items-center border rounded p-3 h-100 bg-light hover-shadow">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box {{ $wallet['bg'] }} bg-opacity-75 text-white rounded d-flex justify-content-center align-items-center me-3" style="width: 48px; height: 48px;">
+                                            <i class="{{ $wallet['icon'] }}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold fs-5">${{ $wallet['value'] }}</div>
+                                            <small class="text-muted">{{ $wallet['label'] }}</small>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-muted"></i>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
+
 
         {{-- Withdrawals Section --}}
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-body">
                 <h5 class="card-title fw-bold mb-4">Withdrawals</h5>
                 <div class="row g-4">
-                    <x-dashboard.stat-card icon="fas fa-credit-card" value="${{$dashboardData['totalWithdrawals']}}" label="Total Withdrawn" bg="success" />
-                    <x-dashboard.stat-card icon="fas fa-credit-card" value="${{$dashboardData['todayWithdrawals']}}" label="Today Withdrawals" bg="warning" />
-                    <x-dashboard.stat-card icon="fas fa-credit-card" value="${{$dashboardData['last30DaysWithdrawals']}}" label="Last 30 days Withdrawals" bg="info" />
-                    <x-dashboard.stat-card icon="fas fa-percent" value="${{number_format($dashboardData['withdrawChargeAmount'], 2)}}" label="Total Withdrawal Charge" bg="secondary" />
+                    @php
+                        $withdrawals = [
+                            ['label' => 'Total Withdrawn', 'value' => number_format($dashboardData['totalWithdrawals'], 2), 'icon' => 'fas fa-credit-card', 'bg' => 'bg-success'],
+                            ['label' => 'Today Withdrawals', 'value' => number_format($dashboardData['todayWithdrawals'], 2), 'icon' => 'fas fa-credit-card', 'bg' => 'bg-warning'],
+                            ['label' => 'Last 30 Days Withdrawals', 'value' => number_format($dashboardData['last30DaysWithdrawals'], 2), 'icon' => 'fas fa-credit-card', 'bg' => 'bg-info'],
+                            ['label' => 'Total Withdrawal Charge', 'value' => number_format($dashboardData['withdrawChargeAmount'], 2), 'icon' => 'fas fa-percent', 'bg' => 'bg-secondary'],
+                        ];
+                    @endphp
+
+                    @foreach ($withdrawals as $withdraw)
+                        <div class="col-md-6">
+                            <a href="{{ route('withdraw.index') }}" class="text-decoration-none text-black">
+                                <div class="d-flex justify-content-between align-items-center border rounded p-3 h-100 bg-light hover-shadow">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box {{ $withdraw['bg'] }} bg-opacity-75 text-white rounded d-flex justify-content-center align-items-center me-3" style="width: 48px; height: 48px;">
+                                            <i class="{{ $withdraw['icon'] }}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold fs-5">${{ $withdraw['value'] }}</div>
+                                            <small class="text-muted">{{ $withdraw['label'] }}</small>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-muted"></i>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
 
-                    {{-- Code Section --}}
-    <div class="card shadow-sm mb-4 border-0">
-        <div class="card-body">
-            <h5 class="card-title fw-bold mb-4">Code Details</h5>
-            <div class="row g-4">
-                <x-dashboard.stat-card icon="fas fa-dollar-sign" value="${{ number_format($dashboardData['totalPurchased'], 2) }}" label="Code Purchase" bg="success"/>
+        {{-- Code Details Section --}}
+        <div class="card shadow-sm mb-4 border-0">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">Code Details</h5>
+                <div class="row g-4">
+                    @php
+                        $codes = [
+                            ['label' => 'Code Purchase', 'value' => number_format($dashboardData['totalPurchased'], 2), 'icon' => 'fas fa-dollar-sign', 'bg' => 'bg-success'],
+                            ['label' => 'Total Code', 'value' => number_format($dashboardData['totalCodes']), 'icon' => 'fas fa-qrcode', 'bg' => 'bg-primary'],
+                            ['label' => 'Used Code', 'value' => number_format($dashboardData['usedCodes']), 'icon' => 'fas fa-check-circle', 'bg' => 'bg-info'],
+                            ['label' => 'Unused Code', 'value' => number_format($dashboardData['unusedCodes']), 'icon' => 'fas fa-clock', 'bg' => 'bg-warning'],
+                        ];
+                    @endphp
 
-                <x-dashboard.stat-card icon="fas fa-qrcode" value="{{ number_format($dashboardData['totalCodes']) }}" label="Total Code" bg="primary" />
-
-                <x-dashboard.stat-card icon="fas fa-check-circle" value="{{ number_format($dashboardData['usedCodes']) }}" label="Used Code" bg="info" />
-
-                <x-dashboard.stat-card icon="fas fa-clock" value="{{ number_format($dashboardData['unusedCodes']) }}" label="Unused Code" bg="warning" />
+                    @foreach ($codes as $code)
+                        <div class="col-md-6">
+                            <a href="{{ route('codes.index') }}" class="text-decoration-none text-black">
+                                <div class="d-flex justify-content-between align-items-center border rounded p-3 h-100 bg-light hover-shadow">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box {{ $code['bg'] }} bg-opacity-75 text-white rounded d-flex justify-content-center align-items-center me-3" style="width: 48px; height: 48px;">
+                                            <i class="{{ $code['icon'] }}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold fs-5">${{ $code['value'] }}</div>
+                                            <small class="text-muted">{{ $code['label'] }}</small>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-muted"></i>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
-    {{-- Investment Section --}}
-    <div class="card shadow-sm mb-4 border-0">
-        <div class="card-body">
-            <h5 class="card-title fw-bold mb-4">Investment Details</h5>
-            <div class="row g-4">
-                <x-dashboard.stat-card icon="fas fa-coins" value="${{ number_format($dashboardData['totalInvestmentAmount'], 2) }}" label="Total Investment" bg="primary" />
-                <x-dashboard.stat-card icon="fas fa-play-circle" value="${{ number_format($dashboardData['runningInvestmentAmount'], 2) }}" label="Running Investment" bg="success" />
-                <x-dashboard.stat-card icon="fas fa-ban" value="${{ number_format($dashboardData['canceledInvestmentAmount'], 2) }}" label="Canceled Investment" bg="danger" />
-                <x-dashboard.stat-card icon="fas fa-hourglass-end" value="${{ number_format($dashboardData['expiredInvestmentAmount'], 2) }}" label="Expired Investment" bg="warning" />
+
+{{-- Investment Details Section --}}
+        <div class="card shadow-sm mb-4 border-0">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">Investment Details</h5>
+                <div class="row g-4">
+                    @php
+                        $investments = [
+                            ['label' => 'Total Investment', 'value' => number_format($dashboardData['totalInvestmentAmount'], 2), 'icon' => 'fas fa-coins', 'bg' => 'bg-primary'],
+                            ['label' => 'Running Investment', 'value' => number_format($dashboardData['runningInvestmentAmount'], 2), 'icon' => 'fas fa-play-circle', 'bg' => 'bg-success'],
+                            ['label' => 'Canceled Investment', 'value' => number_format($dashboardData['canceledInvestmentAmount'], 2), 'icon' => 'fas fa-ban', 'bg' => 'bg-danger'],
+                            ['label' => 'Expired Investment', 'value' => number_format($dashboardData['expiredInvestmentAmount'], 2), 'icon' => 'fas fa-hourglass-end', 'bg' => 'bg-warning'],
+                        ];
+                    @endphp
+
+                    @foreach ($investments as $investment)
+                        <div class="col-md-6">
+                            <a href="{{ route('admin.investments') }}" class="text-decoration-none text-black">
+                                <div class="d-flex justify-content-between align-items-center border rounded p-3 h-100 bg-light hover-shadow">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box {{ $investment['bg'] }} bg-opacity-75 text-white rounded d-flex justify-content-center align-items-center me-3" style="width: 48px; height: 48px;">
+                                            <i class="{{ $investment['icon'] }}"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold fs-5">${{ $investment['value'] }}</div>
+                                            <small class="text-muted">{{ $investment['label'] }}</small>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-muted"></i>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>

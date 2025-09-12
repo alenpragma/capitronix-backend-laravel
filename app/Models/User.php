@@ -174,6 +174,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $total;
     }
 
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transactions::class, 'user_id');
+    }
+
+    public function totalEarning(): float
+    {
+        return (float) $this->transactions()
+            ->whereIn('remark', ['referral_commission', 'interest', 'generation_income'])
+            ->sum('amount');
+    }
+
 
 }
 
