@@ -34,7 +34,7 @@ class WithdrawController extends Controller
 
         $withdraw = Transactions::findOrFail($id);
         if ($request->status == 'rejected') {
-            User::where('id', $withdraw->user_id)->increment('wallet', $withdraw->amount);
+            User::where('id', $withdraw->user_id)->increment('profit_wallet', $withdraw->amount);
             $withdraw->status = $request->status;
             $withdraw->save();
             return redirect()->route('withdraw.index')->with('success', 'Withdrawal status updated.');
